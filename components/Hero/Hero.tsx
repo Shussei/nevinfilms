@@ -49,11 +49,11 @@ export default function Hero() {
             }, "-=1.2");
 
             if (navElement) {
-                tl.to(navElement, { 
-                    opacity: 1, 
-                    y: 0, 
-                    duration: 1.0, 
-                    ease: "power3.out" 
+                tl.to(navElement, {
+                    opacity: 1,
+                    y: 0,
+                    duration: 1.0,
+                    ease: "power3.out"
                 }, "-=0.8");
             }
 
@@ -108,7 +108,7 @@ export default function Hero() {
             <div className="hero-section hero-intro-page">
                 <div className="hero-logo-container">
                     <svg className="hero-aperture" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="50" cy="50" r="48" fill="none" stroke="currentColor" strokeWidth="0.5" opacity="0.3"/>
+                        <circle cx="50" cy="50" r="48" fill="none" stroke="currentColor" strokeWidth="0.5" opacity="0.3" />
                         <path d="M50 2 L50 30 M75 15 L60 40 M98 50 L70 50 M75 85 L60 60 M50 98 L50 70 M25 85 L40 60 M2 50 L30 50 M25 15 L40 40" stroke="currentColor" strokeWidth="1" fill="none" />
                         <circle cx="50" cy="50" r="15" fill="none" stroke="currentColor" strokeWidth="0.5" />
                     </svg>
@@ -121,12 +121,12 @@ export default function Hero() {
                     <img src="/hero-bg.png" alt="Cinematic Background" loading="lazy" />
                     <div className="hero-overlay"></div>
                 </div>
-                
+
                 <div className="film-grain"></div>
-                
+
                 <div className="hero-titles">
                     <h1 className="hero-main-title">NEVIN JOSEPH</h1>
-                    <p className="hero-subtitle">CINEMATOGRAPHER</p>
+                    <p className="hero-subtitle">DIRECTOR</p>
                 </div>
             </div>
         </div>
