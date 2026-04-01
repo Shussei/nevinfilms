@@ -11,15 +11,15 @@ export default function AnimatedBackground() {
   useEffect(() => {
     // Accessibility & Breakpoint Guard
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (prefersReducedMotion || !isDesktop) return;
-
     const ctx = gsap.context(() => {
+      const isMobile = !isDesktop;
+
       // Layer 1 - FAR
       gsap.to(".blob-far", {
-        x: "+=150",
-        y: "+=100",
-        scale: 1.05,
-        duration: () => gsap.utils.random(30, 45),
+        x: isMobile ? "+=50" : "+=150",
+        y: isMobile ? "+=30" : "+=100",
+        scale: isMobile ? 1.02 : 1.05,
+        duration: isMobile ? 60 : gsap.utils.random(30, 45),
         repeat: -1,
         yoyo: true,
         ease: "sine.inOut"
@@ -27,10 +27,10 @@ export default function AnimatedBackground() {
 
       // Layer 2 - MID
       gsap.to(".blob-mid", {
-        x: "-=200",
-        y: "+=150",
-        scale: 1.08,
-        duration: () => gsap.utils.random(18, 25),
+        x: isMobile ? "-=60" : "-=200",
+        y: isMobile ? "+=40" : "+=150",
+        scale: isMobile ? 1.03 : 1.08,
+        duration: isMobile ? 40 : gsap.utils.random(18, 25),
         repeat: -1,
         yoyo: true,
         ease: "sine.inOut"
@@ -38,10 +38,10 @@ export default function AnimatedBackground() {
 
       // Layer 3 - NEAR
       gsap.to(".blob-near", {
-        x: "+=250",
-        y: "-=180",
-        scale: 1.12,
-        duration: () => gsap.utils.random(10, 16),
+        x: isMobile ? "+=70" : "+=250",
+        y: isMobile ? "-=50" : "-=180",
+        scale: isMobile ? 1.04 : 1.12,
+        duration: isMobile ? 30 : gsap.utils.random(10, 16),
         repeat: -1,
         yoyo: true,
         ease: "sine.inOut"
@@ -51,19 +51,8 @@ export default function AnimatedBackground() {
     return () => ctx.revert();
   }, [isDesktop]);
 
-  // Animation Degradation: Remove heavy GPU effects on small devices
-  if (isDesktop === false) {
-    return (
-      <div
-        style={{
-          position: "fixed",
-          inset: 0,
-          zIndex: -10,
-          backgroundColor: "#030303", // Static clean background
-        }}
-      />
-    );
-  }
+  // Mobile optimization: Render blobs with extremely low opacity and simplified styles
+  const isMobile = !isDesktop;
 
   return (
     <div
@@ -78,8 +67,7 @@ export default function AnimatedBackground() {
         backgroundColor: "transparent",
       }}
     >
-      {/* blob layers only render for desktop to avoid GPU overhead on mobile */}
-      {isDesktop && (
+      {/* blob layers render with lower opacity on mobile */}
         <>
           <div 
             className="ambient-blob blob-far"
@@ -87,12 +75,12 @@ export default function AnimatedBackground() {
               position: "absolute",
               top: "5%",
               left: "10%",
-              width: "600px",
-              height: "600px",
+              width: isMobile ? "300px" : "600px",
+              height: isMobile ? "300px" : "600px",
               borderRadius: "50%",
               backgroundColor: "#7c3aed",
-              opacity: 0.08,
-              filter: "blur(130px)",
+              opacity: isMobile ? 0.04 : 0.08,
+              filter: isMobile ? "blur(60px)" : "blur(130px)",
               willChange: "transform"
             }}
           />
@@ -102,12 +90,12 @@ export default function AnimatedBackground() {
               position: "absolute",
               bottom: "5%",
               right: "5%",
-              width: "650px",
-              height: "550px",
+              width: isMobile ? "350px" : "650px",
+              height: isMobile ? "250px" : "550px",
               borderRadius: "50%",
               backgroundColor: "#06b6d4",
-              opacity: 0.07,
-              filter: "blur(140px)",
+              opacity: isMobile ? 0.03 : 0.07,
+              filter: isMobile ? "blur(70px)" : "blur(140px)",
               willChange: "transform"
             }}
           />
@@ -117,12 +105,12 @@ export default function AnimatedBackground() {
               position: "absolute",
               top: "40%",
               left: "60%",
-              width: "450px",
-              height: "450px",
+              width: isMobile ? "250px" : "450px",
+              height: isMobile ? "250px" : "450px",
               borderRadius: "50%",
               backgroundColor: "#ec4899",
-              opacity: 0.12,
-              filter: "blur(80px)",
+              opacity: isMobile ? 0.06 : 0.12,
+              filter: isMobile ? "blur(40px)" : "blur(80px)",
               willChange: "transform",
               transform: "translate(-50%, -50%)"
             }}
@@ -133,17 +121,16 @@ export default function AnimatedBackground() {
               position: "absolute",
               bottom: "15%",
               left: "25%",
-              width: "350px",
-              height: "350px",
+              width: isMobile ? "200px" : "350px",
+              height: isMobile ? "200px" : "350px",
               borderRadius: "50%",
               backgroundColor: "#06b6d4",
-              opacity: 0.15,
-              filter: "blur(50px)",
+              opacity: isMobile ? 0.08 : 0.15,
+              filter: isMobile ? "blur(30px)" : "blur(50px)",
               willChange: "transform"
             }}
           />
         </>
-      )}
     </div>
   );
 }

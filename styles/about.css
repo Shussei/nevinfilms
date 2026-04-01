@@ -141,16 +141,20 @@
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    padding: 0 10vw;
+    padding: 10vh 12vw 0; /* Add top padding to move away from screen edge */
+    gap: 8rem;
+    transform: translateY(-20px); /* Subtle overall shift up for better visual centering */
   }
 
   .about-image {
-    flex: 0 0 350px;
+    flex: 0 0 380px;
+    max-width: none;
   }
 
   .about-content {
     flex: 1;
     text-align: left;
+    max-width: 700px;
   }
 
   .about-image:hover img {
@@ -159,17 +163,37 @@
   }
 
   .about-name {
-    font-size: 2.5rem;
+    font-size: 3rem;
+    margin-bottom: 1rem;
   }
 
   .about-role {
-    font-size: 0.95rem;
-    letter-spacing: 0.8em;
-    margin: 1.5rem 0 3rem;
+    font-size: 1rem;
+    letter-spacing: 0.9em;
+    margin: 2rem 0 3.5rem;
+  }
+
+  .about-statement {
+      font-size: 1.1rem;
+      line-height: 1.8;
+      margin-bottom: 3.5rem;
   }
 
   .about-background {
-    margin-top: 3.5rem;
-    gap: 1.2rem;
+    margin-top: 4.5rem;
+    gap: 1.5rem;
   }
+
+  .about-credential {
+      font-size: 0.9rem;
+      padding-left: 2rem;
+  }
+}
+
+/* ─── Tablet Optimization (768px - 1023px) ─── */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .about-hero-section {
+        padding: 12vh 6rem 5vh;
+        gap: 5rem;
+    }
 }

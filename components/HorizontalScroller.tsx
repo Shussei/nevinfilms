@@ -17,9 +17,29 @@ export default function HorizontalScroller({ children }: Props) {
     const wrapperRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        // MOBILE BYPASS (REACTIVE)
-        if (window.matchMedia("(max-width: 767px)").matches) {
-            return;
+        const isMobile = window.innerWidth < 768;
+
+        // ─── HARD DISABLE & CLEANUP FOR MOBILE ───
+        if (isMobile) {
+            ScrollTrigger.getAll().forEach(st => st.kill());
+            gsap.killTweensOf("*");
+
+            // Lightweight Mobile Reveals (IntersectionObserver)
+            const revealObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        gsap.fromTo(entry.target, 
+                            { y: 20, opacity: 0 },
+                            { y: 0, opacity: 1, duration: 0.6, ease: "power2.out" }
+                        );
+                        revealObserver.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.2 });
+
+            document.querySelectorAll(".gsap-reveal").forEach(el => revealObserver.observe(el));
+
+            return () => revealObserver.disconnect();
         }
 
         const ctx = gsap.context(() => {
@@ -141,10 +161,17 @@ export default function HorizontalScroller({ children }: Props) {
                 // --- D. REVEALS ---
                 const reveals = section.querySelectorAll(".gsap-reveal");
                 if (reveals.length) {
+                    const isAbout = section.classList.contains("about-panel");
                     mainTimeline.fromTo(reveals, 
-                        { y: 30, opacity: 0 },
-                        { y: 0, opacity: 1, duration: 0.3, stagger: 0.1, ease: "power2.out" },
-                        arrivalLabel
+                        { y: 50, opacity: 0 },
+                        { 
+                            y: 0, 
+                            opacity: 1, 
+                            duration: 0.4, 
+                            stagger: isAbout ? 0 : 0.1, 
+                            ease: "power2.out" 
+                        },
+                        isAbout ? `${arrivalLabel}-=0.2` : arrivalLabel // About reveals slightly earlier
                     );
                 }
             });

@@ -12,17 +12,18 @@ if (typeof window !== "undefined") {
 export default function SmoothScroller({ children }: { children: ReactNode }) {
   useEffect(() => {
     let lenis: Lenis;
-
-    // ScrollTrigger Defaults & Config
-    ScrollTrigger.defaults({ invalidateOnRefresh: true });
-    ScrollTrigger.config({ ignoreMobileResize: true });
-
     const isMobile = window.matchMedia("(max-width: 767px)").matches;
+    
+    // ─── HARD DISABLE FOR MOBILE ───
+    if (isMobile) {
+      (window as any).lenis = undefined;
+      return;
+    }
 
     lenis = new Lenis({
-        lerp: isMobile ? 0.1 : 0.05,
-        duration: isMobile ? 0.8 : 1.2,
-        smoothWheel: !isMobile,
+        lerp: 0.05,
+        duration: 1.2,
+        smoothWheel: true,
         // @ts-ignore - part of user-provided mandatory config
         smoothTouch: true,
     });
