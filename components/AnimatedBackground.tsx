@@ -19,7 +19,7 @@ export default function AnimatedBackground() {
         x: isMobile ? "+=50" : "+=150",
         y: isMobile ? "+=30" : "+=100",
         scale: isMobile ? 1.02 : 1.05,
-        duration: isMobile ? 60 : gsap.utils.random(30, 45),
+        duration: isMobile ? 35 : 22,
         repeat: -1,
         yoyo: true,
         ease: "sine.inOut"
@@ -30,7 +30,7 @@ export default function AnimatedBackground() {
         x: isMobile ? "-=60" : "-=200",
         y: isMobile ? "+=40" : "+=150",
         scale: isMobile ? 1.03 : 1.08,
-        duration: isMobile ? 40 : gsap.utils.random(18, 25),
+        duration: isMobile ? 25 : 16,
         repeat: -1,
         yoyo: true,
         ease: "sine.inOut"
@@ -41,7 +41,7 @@ export default function AnimatedBackground() {
         x: isMobile ? "+=70" : "+=250",
         y: isMobile ? "-=50" : "-=180",
         scale: isMobile ? 1.04 : 1.12,
-        duration: isMobile ? 30 : gsap.utils.random(10, 16),
+        duration: isMobile ? 20 : 10,
         repeat: -1,
         yoyo: true,
         ease: "sine.inOut"
@@ -67,69 +67,69 @@ export default function AnimatedBackground() {
         backgroundColor: "transparent",
       }}
     >
-      {/* blob layers render with lower opacity on mobile */}
+      {/* blob layers render with boosted opacity for contrast */}
         <>
-          <div 
-            className="ambient-blob blob-far"
-            style={{
-              position: "absolute",
-              top: "5%",
-              left: "10%",
-              width: isMobile ? "300px" : "600px",
-              height: isMobile ? "300px" : "600px",
-              borderRadius: "50%",
-              backgroundColor: "#7c3aed",
-              opacity: isMobile ? 0.04 : 0.08,
-              filter: isMobile ? "blur(60px)" : "blur(130px)",
-              willChange: "transform"
-            }}
-          />
-          <div 
-            className="ambient-blob blob-far"
-            style={{
-              position: "absolute",
-              bottom: "5%",
-              right: "5%",
-              width: isMobile ? "350px" : "650px",
-              height: isMobile ? "250px" : "550px",
-              borderRadius: "50%",
-              backgroundColor: "#06b6d4",
-              opacity: isMobile ? 0.03 : 0.07,
-              filter: isMobile ? "blur(70px)" : "blur(140px)",
-              willChange: "transform"
-            }}
-          />
-          <div 
-            className="ambient-blob blob-mid"
-            style={{
-              position: "absolute",
-              top: "40%",
-              left: "60%",
-              width: isMobile ? "250px" : "450px",
-              height: isMobile ? "250px" : "450px",
-              borderRadius: "50%",
-              backgroundColor: "#ec4899",
-              opacity: isMobile ? 0.06 : 0.12,
-              filter: isMobile ? "blur(40px)" : "blur(80px)",
-              willChange: "transform",
-              transform: "translate(-50%, -50%)"
-            }}
-          />
-          <div 
-            className="ambient-blob blob-near"
-            style={{
-              position: "absolute",
-              bottom: "15%",
-              left: "25%",
-              width: isMobile ? "200px" : "350px",
-              height: isMobile ? "200px" : "350px",
-              borderRadius: "50%",
-              backgroundColor: "#06b6d4",
-              opacity: isMobile ? 0.08 : 0.15,
-              filter: isMobile ? "blur(30px)" : "blur(50px)",
-              willChange: "transform"
-            }}
-          />
+      <div 
+        className="ambient-blob blob-far"
+        style={{
+          position: "absolute",
+          top: "5%",
+          left: "10%",
+          width: isMobile ? "300px" : "600px",
+          height: isMobile ? "300px" : "600px",
+          borderRadius: "50%",
+          backgroundColor: "#064e3b", // Deep Emerald
+          opacity: isMobile ? 0.08 : 0.15,
+          filter: isMobile ? "blur(60px)" : "blur(130px)",
+          willChange: "transform"
+        }}
+      />
+      <div 
+        className="ambient-blob blob-far"
+        style={{
+          position: "absolute",
+          bottom: "5%",
+          right: "5%",
+          width: isMobile ? "350px" : "650px",
+          height: isMobile ? "250px" : "550px",
+          borderRadius: "50%",
+          backgroundColor: "#1e1b4b", // Midnight Indigo
+          opacity: isMobile ? 0.06 : 0.12,
+          filter: isMobile ? "blur(70px)" : "blur(140px)",
+          willChange: "transform"
+        }}
+      />
+      <div 
+        className="ambient-blob blob-mid"
+        style={{
+          position: "absolute",
+          top: "40%",
+          left: "60%",
+          width: isMobile ? "250px" : "450px",
+          height: isMobile ? "250px" : "450px",
+          borderRadius: "50%",
+          backgroundColor: "#312e81", // Slightly lighter Indigo
+          opacity: isMobile ? 0.12 : 0.22,
+          filter: isMobile ? "blur(40px)" : "blur(80px)",
+          willChange: "transform",
+          transform: "translate(-50%, -50%)"
+        }}
+      />
+      <div 
+        className="ambient-blob blob-near"
+        style={{
+          position: "absolute",
+          bottom: "15%",
+          left: "25%",
+          width: isMobile ? "200px" : "350px",
+          height: isMobile ? "200px" : "350px",
+          borderRadius: "50%",
+          backgroundColor: "#92400e", // Muted Amber for subtle cinematic warmth
+          opacity: isMobile ? 0.14 : 0.28,
+          filter: isMobile ? "blur(30px)" : "blur(60px)",
+          willChange: "transform"
+        }}
+      />
         </>
     </div>
   );

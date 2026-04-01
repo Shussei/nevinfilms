@@ -42,27 +42,20 @@ body {
   scroll-behavior: smooth;
 }
 
+/* ─── Cinematic Background (Animated Blobs Restoration) ─── */
 .animated-bg {
-  opacity: 0;
-  transition: opacity 1.5s ease;
+  position: fixed;
+  inset: 0;
+  z-index: -1; 
+  pointer-events: none;
+  opacity: 0; /* Hidden by default for Home/Logo isolation */
+  transition: opacity 1.2s ease;
 }
 
-body.menu-open {
-  overflow: hidden;
-  touch-action: none;
-}
-
-img {
-  max-width: 100%;
-  height: auto;
-  display: block;
-}
-
-/* FIXED OVERLAY & VIDEO */
 .cinematic-overlay {
   position: fixed;
   inset: 0;
-  z-index: 0; /* Above background, below main */
+  z-index: 0; 
   pointer-events: none;
   background: radial-gradient(
     circle at center,
@@ -71,24 +64,16 @@ img {
   );
 }
 
-/* Base Mobile-First Layouts */
-.panel-section {
-  width: 100%;
-  min-height: 100dvh;
-  display: flex;
-  position: relative;
-  background: transparent;
-}
-
 main {
   position: relative;
-  z-index: 1;
+  z-index: 1; /* Top Layer */
 }
 
-main .panel-section,
-main .horizontal-wrapper,
-main .horizontal-container {
-  background: transparent;
+/* Force Transparency on all Scroller Layouts */
+.horizontal-wrapper,
+.horizontal-container,
+.panel-section {
+  background: transparent !important;
 }
 
 /* ABOUT */

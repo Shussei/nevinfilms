@@ -135,7 +135,7 @@ export default function HorizontalScroller({ children }: Props) {
 
                     // Background Fades
                     if (i === 1 && animBg) {
-                        mainTimeline.to(animBg, { opacity: 0.15, duration: 0.5 }, moveStartTime);
+                        mainTimeline.to(animBg, { opacity: 0.4, duration: 0.8 }, moveStartTime);
                     }
                 }
 
