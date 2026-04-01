@@ -118,6 +118,19 @@
   50% { transform: translate(-3%, 1%); }
 }
 
+/* ─── Mobile Refinements (< 768px) ─── */
+@media (max-width: 767px) {
+  .hero-main-title {
+    font-size: 14vw; /* Fill the width elegantly */
+    line-height: 1.1;
+  }
+
+  .hero-subtitle {
+    letter-spacing: 0.4em;
+    font-size: 0.65rem;
+  }
+}
+
 /* ─── Desktop Overrides (>= 1024px) ─── */
 @media (min-width: 1024px) {
   .hero-logo-container {

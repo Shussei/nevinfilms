@@ -86,6 +86,23 @@
   color: rgba(255,255,255,0.2);
 }
 
+/* ─── Mobile Refinements (< 768px) ─── */
+@media (max-width: 767px) {
+  .contact-display {
+    font-size: 15vw;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+  }
+
+  .contact-row {
+    padding: 1.2rem 0;
+  }
+
+  .contact-row-value {
+    font-size: 0.9rem;
+  }
+}
+
 /* ─── Tablet Adaptive (768px - 1023px) ─── */
 @media (min-width: 768px) {
   .contact-row {

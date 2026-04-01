@@ -18,9 +18,9 @@ export default function Hero() {
             // ─── Base Intro (Universal) ───
             const tl = gsap.timeline();
 
-            // 1. Branding Intro (Logo hold)
+            // 1. Branding Intro (Logo hold - Faster on mobile)
             tl.to(".hero-logo-container", {
-                duration: 2.0,
+                duration: isDesktop ? 2.0 : 0.8,
             });
 
             // 2. The Transition to content
