@@ -50,10 +50,11 @@ const WORKS = [
     },
     {
         id: "7",
-        youtubeId: "0vTstS1zU7s",
-        title: "Bleed for Joy",
-        category: "Short Film",
-        desc: "A stylized narrative project with high-end cinematic textures."
+        youtubeId: "Ieat2PHUPwg",
+        title: "Krishna — Menon Associates",
+        category: "Architectural",
+        desc: "A cinematic walkthrough of 'Krishna,' a residential haven in Aluva designed by Menon Associates, part of the Silpaayanam series.",
+        customThumbnail: "/krishna-thumb.png"
     },
     {
         id: "8",
@@ -90,13 +91,13 @@ export default function WorkGallery() {
                         onMouseLeave={() => isDesktop && setHoveredWork(null)}
                     >
                         <img
-                            src={`https://img.youtube.com/vi/${work.youtubeId}/maxresdefault.jpg`}
+                            src={work.customThumbnail || `https://img.youtube.com/vi/${work.youtubeId}/maxresdefault.jpg`}
                             alt={work.title}
                             className="work-hover-image"
                             loading="lazy"
                             onError={(e) => {
                                 const target = e.target as HTMLImageElement;
-                                if (!target.src.includes("hqdefault")) {
+                                if (!work.customThumbnail && !target.src.includes("hqdefault")) {
                                     target.src = `https://img.youtube.com/vi/${work.youtubeId}/hqdefault.jpg`;
                                 }
                             }}
