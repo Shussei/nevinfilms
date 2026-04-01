@@ -1,0 +1,131 @@
+/* ─── Contact Section (Mobile-First) ─── */
+.contact-inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3rem;
+  padding: var(--section-padding);
+  width: 100%;
+  min-height: 100dvh;
+}
+
+.contact-heading-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.contact-eyebrow {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+}
+
+.contact-display {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 10vw, 6rem);
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.08);
+  line-height: 1;
+  -webkit-text-stroke: 1px rgba(255,255,255,0.15);
+}
+
+.contact-rows {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+.contact-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1.5rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.4s ease;
+  min-height: 44px; /* Touch target */
+}
+
+.contact-row-icon {
+  color: rgba(255,255,255,0.3);
+  display: flex;
+  align-items: center;
+}
+
+.contact-row-label {
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+}
+
+.contact-row-value {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  letter-spacing: 0.05em;
+  color: rgba(255,255,255,0.8);
+  word-break: break-all;
+}
+
+.contact-row-arrow {
+  display: none; /* Hidden on mobile */
+}
+
+.contact-tagline {
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.2);
+}
+
+/* ─── Tablet Adaptive (768px - 1023px) ─── */
+@media (min-width: 768px) {
+  .contact-row {
+    flex-direction: row;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1.5rem 1rem;
+  }
+
+  .contact-row-label {
+    width: 100px;
+  }
+
+  .contact-row-arrow {
+    display: block;
+    color: rgba(255,255,255,0.1);
+  }
+}
+
+/* ─── Desktop Cinematic (>= 1024px) ─── */
+@media (min-width: 1024px) {
+  .contact-inner {
+    padding: 0 10vw;
+  }
+
+  .contact-row:hover {
+    background: rgba(255,255,255,0.03);
+    padding-left: 2rem;
+  }
+
+  .contact-row:hover .contact-row-icon {
+    color: #fff;
+  }
+
+  .contact-row:hover .contact-row-value {
+    color: #fff;
+  }
+
+  .contact-row:hover .contact-row-arrow {
+    transform: translateX(10px);
+    color: var(--color-accent);
+  }
+}

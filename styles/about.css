@@ -1,0 +1,175 @@
+.about-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.vertical-inner {
+  will-change: transform;
+  min-height: 180vh; /* Final forced overflow depth for full certificate visibility */
+}
+
+.about-hero-section {
+  width: 100%;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--section-padding);
+  gap: 3rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.about-image {
+  width: 100%;
+  max-width: 320px;
+  aspect-ratio: 3 / 4;
+  position: relative;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0.05));
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.about-image-inner {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.about-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(1);
+  transition: filter 0.8s ease, transform 0.8s ease;
+}
+
+.about-content {
+  width: 100%;
+  max-width: 600px;
+  text-align: center;
+}
+
+.about-name {
+  font-family: var(--font-display);
+  font-size: var(--font-size-h2);
+  letter-spacing: 0.1em;
+  margin-bottom: 0.5rem;
+  color: #ffffff;
+}
+
+.about-role {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  letter-spacing: 0.4em;
+  line-height: 1.5;
+  color: var(--color-accent);
+  margin: 1rem 0 2rem;
+  text-transform: uppercase;
+}
+
+.about-statement {
+  font-family: var(--font-body);
+  font-size: var(--font-size-base);
+  line-height: 1.7;
+  color: var(--color-text-dim);
+  margin-bottom: 2rem;
+  font-weight: 300;
+}
+
+.about-background {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.about-credential {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  color: var(--color-text-dim);
+  padding: 0.8rem 1rem;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.03);
+  letter-spacing: 0.05em;
+  text-align: center;
+}
+
+/* ─── Tablet Adaptive (768px - 1023px) ─── */
+@media (min-width: 768px) {
+  .about-hero-section {
+    padding: 6rem;
+    gap: 4rem;
+  }
+
+  .about-name {
+    font-size: 2.2rem;
+  }
+
+  .about-role {
+    font-size: 0.85rem;
+    letter-spacing: 0.6em;
+  }
+
+  .about-credential {
+    padding-left: 1.5rem;
+    text-align: left;
+    position: relative;
+    border: none;
+    background: none;
+  }
+
+  .about-credential::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 6px;
+    height: 1px;
+    background: var(--color-accent);
+  }
+}
+
+/* ─── Desktop Cinematic (>= 1024px) ─── */
+@media (min-width: 1024px) {
+  .about-hero-section {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 0 10vw;
+  }
+
+  .about-image {
+    flex: 0 0 350px;
+  }
+
+  .about-content {
+    flex: 1;
+    text-align: left;
+  }
+
+  .about-image:hover img {
+    filter: grayscale(0);
+    transform: scale(1.05);
+  }
+
+  .about-name {
+    font-size: 2.5rem;
+  }
+
+  .about-role {
+    font-size: 0.95rem;
+    letter-spacing: 0.8em;
+    margin: 1.5rem 0 3rem;
+  }
+
+  .about-background {
+    margin-top: 3.5rem;
+    gap: 1.2rem;
+  }
+}
