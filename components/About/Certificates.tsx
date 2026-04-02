@@ -58,12 +58,12 @@ export default function Certificates() {
 
     return (
         <div className="certificates-section">
-            <h2 className="certificates-title gsap-reveal">Certifications & Honors</h2>
+            <h2 className="certificates-title gsap-reveal mobile-reveal">Certifications & Honors</h2>
             <div className="certificates-grid">
                 {CERTIFICATES.map((cert) => (
                     <div
                         key={cert.id}
-                        className="certificate-card gsap-reveal"
+                        className="certificate-card gsap-reveal mobile-reveal"
                         onClick={() => setSelectedCert(cert)}
                     >
                         <div className="certificate-image-container">

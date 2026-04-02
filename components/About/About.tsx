@@ -10,27 +10,28 @@ export default function About() {
 
     return (
         <div ref={containerRef} className="about-wrapper">
+            <div className="section-divider"></div>
             <div className="vertical-inner" data-scroll-vertical="true">
                 {/* Part 1: Main Profile */}
                 <div className="about-hero-section">
                     {/* Glassmorphic image frame — gradient border via padding trick */}
-                    <div className="about-image gsap-reveal">
+                    <div className="about-image gsap-reveal mobile-reveal mobile-reveal-image parallax-lite">
                         <div className="about-image-inner">
                             <img src="/IMG_4314.JPG.jpeg" alt="Nevin J Madekkal Portrait" />
                         </div>
                     </div>
 
                     <div className="about-content">
-                        <h1 className="about-name gsap-reveal">NEVIN J MADEKKAL</h1>
-                        <p className="about-role gsap-reveal">FILMMAKER & MEDIA PROFESSIONAL</p>
+                        <h1 className="about-name gsap-reveal mobile-reveal delay-1 text-focus">NEVIN J MADEKKAL</h1>
+                        <p className="about-role gsap-reveal mobile-reveal delay-2 text-focus">FILMMAKER & MEDIA PROFESSIONAL</p>
 
-                        <p className="about-statement gsap-reveal">
+                        <p className="about-statement gsap-reveal mobile-reveal delay-3 text-focus">
                             Dynamic filmmaker and media professional with extensive experience in directing,
                             cinematography, and production. Proven track record in managing film festivals
                             and creating compelling visual content across multiple formats.
                         </p>
 
-                        <div className="about-background gsap-reveal">
+                        <div className="about-background gsap-reveal mobile-reveal delay-4">
                             <span className="about-credential">M.A. Cinema & Television — SH College Thevera (2021–2023)</span>
                             <span className="about-credential">B.A. Mass Communication — Nitte Institute (2018–2021)</span>
                             <span className="about-credential">Festival Director — Fete Int. Short Film Festival (Oct 2022)</span>

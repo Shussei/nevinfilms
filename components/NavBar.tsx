@@ -14,16 +14,32 @@ if (typeof window !== "undefined") {
 export default function NavBar() {
     const [activeIndex, setActiveIndex] = useState(0);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [scrollProgress, setScrollProgress] = useState(0);
     const isDesktop = useIsDesktop();
 
     useEffect(() => {
+        const handleScroll = () => {
+            const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            setScrollProgress(scrolled);
+        };
+
+        window.addEventListener("scroll", handleScroll);
+        // Initial check
+        handleScroll();
+
         const handleSectionChange = (e: any) => {
             const index = e.detail.activeIndex;
             const validIndex = Math.max(0, Math.min(index, 4));
             setActiveIndex(validIndex);
         };
         window.addEventListener("sectionChange", handleSectionChange);
-        return () => window.removeEventListener("sectionChange", handleSectionChange);
+        
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+            window.removeEventListener("sectionChange", handleSectionChange);
+        };
     }, []);
 
     const navItems = ["Home", "About", "Skills", "Work", "Contact"];
@@ -71,6 +87,14 @@ export default function NavBar() {
 
     return (
         <nav className="cinematic-nav">
+            {/* Scroll Progress Bar (Top) */}
+            <div className="scroll-progress-container">
+                <div 
+                    className="scroll-progress-bar" 
+                    style={{ width: `${scrollProgress}%` }}
+                />
+            </div>
+
             <ul className="cinematic-nav__list">
                 {navItems.map((item, index) => (
                     <li key={item}>

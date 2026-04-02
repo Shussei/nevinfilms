@@ -2,13 +2,19 @@
 
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
+import { useIsDesktop } from "@/hooks/useIsDesktop";
 import "@/styles/cursor.css";
 
 export default function CustomCursor() {
   const cursorRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
 
+  const isDesktop = useIsDesktop();
+
   useEffect(() => {
+    // ─── HYDRATION & MOBILE GUARD ───
+    if (isDesktop === null || isDesktop === false) return;
+
     const cursor = cursorRef.current;
     const text = textRef.current;
     if (!cursor || !text) return;
@@ -77,7 +83,12 @@ export default function CustomCursor() {
       document.removeEventListener("mouseleave", handleMouseLeave);
       document.removeEventListener("mouseenter", handleMouseEnter);
     };
-  }, []);
+  }, [isDesktop]);
+
+  // ─── HYDRATION SAFE RENDER ───
+  if (isDesktop === null || isDesktop === false) {
+    return null;
+  }
 
   return (
     <div ref={cursorRef} className="custom-cursor">

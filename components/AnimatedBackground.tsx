@@ -9,17 +9,21 @@ export default function AnimatedBackground() {
   const isDesktop = useIsDesktop();
 
   useEffect(() => {
-    // Accessibility & Breakpoint Guard
+    // ─── HYDRATION & PERFORMANCE GUARD ───
+    if (isDesktop === null) return;
+
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReducedMotion) return;
+
     const ctx = gsap.context(() => {
       const isMobile = !isDesktop;
 
       // Layer 1 - FAR
       gsap.to(".blob-far", {
-        x: isMobile ? "+=50" : "+=150",
-        y: isMobile ? "+=30" : "+=100",
-        scale: isMobile ? 1.02 : 1.05,
-        duration: isMobile ? 35 : 22,
+        x: isMobile ? "+=30" : "+=150",
+        y: isMobile ? "+=20" : "+=100",
+        scale: isMobile ? 1.01 : 1.05,
+        duration: isMobile ? 50 : 22,
         repeat: -1,
         yoyo: true,
         ease: "sine.inOut"
@@ -27,10 +31,10 @@ export default function AnimatedBackground() {
 
       // Layer 2 - MID
       gsap.to(".blob-mid", {
-        x: isMobile ? "-=60" : "-=200",
-        y: isMobile ? "+=40" : "+=150",
-        scale: isMobile ? 1.03 : 1.08,
-        duration: isMobile ? 25 : 16,
+        x: isMobile ? "-=40" : "-=200",
+        y: isMobile ? "+=30" : "+=150",
+        scale: isMobile ? 1.02 : 1.08,
+        duration: isMobile ? 40 : 16,
         repeat: -1,
         yoyo: true,
         ease: "sine.inOut"
@@ -38,10 +42,10 @@ export default function AnimatedBackground() {
 
       // Layer 3 - NEAR
       gsap.to(".blob-near", {
-        x: isMobile ? "+=70" : "+=250",
-        y: isMobile ? "-=50" : "-=180",
-        scale: isMobile ? 1.04 : 1.12,
-        duration: isMobile ? 20 : 10,
+        x: isMobile ? "+=50" : "+=250",
+        y: isMobile ? "-=40" : "-=180",
+        scale: isMobile ? 1.03 : 1.12,
+        duration: isMobile ? 35 : 10,
         repeat: -1,
         yoyo: true,
         ease: "sine.inOut"
@@ -51,7 +55,9 @@ export default function AnimatedBackground() {
     return () => ctx.revert();
   }, [isDesktop]);
 
-  // Mobile optimization: Render blobs with extremely low opacity and simplified styles
+  // ─── HYDRATION SAFE RENDER ───
+  if (isDesktop === null) return null;
+
   const isMobile = !isDesktop;
 
   return (

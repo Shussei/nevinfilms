@@ -91,17 +91,28 @@ export default function WorkGallery() {
         setMounted(true);
     }, []);
 
+    // ─── BODY SCROLL LOCK ───
+    useEffect(() => {
+        if (selectedWork) {
+            document.body.classList.add("modal-open");
+        } else {
+            document.body.classList.remove("modal-open");
+        }
+        return () => document.body.classList.remove("modal-open");
+    }, [selectedWork]);
+
     return (
         <section className="panel-section work-panel">
             <div className="work-header">
-                <h2 className="gsap-reveal">Selected Works</h2>
+                <h2 className="gsap-reveal mobile-reveal">Selected Works</h2>
             </div>
 
+            <div className="section-divider"></div>
             <div className="work-grid">
                 {WORKS.map((work) => (
                     <div
                         key={work.id}
-                        className="work-grid-item gsap-reveal"
+                        className="work-grid-item gsap-reveal mobile-reveal mobile-reveal-image parallax-lite"
                         onClick={() => setSelectedWork(work)}
                         onMouseEnter={() => isDesktop && setHoveredWork(work.id)}
                         onMouseLeave={() => isDesktop && setHoveredWork(null)}
@@ -137,8 +148,8 @@ export default function WorkGallery() {
                         )}
 
                         <div className="work-item-overlay">
-                            <h3>{work.title}</h3>
-                            <p>{work.category}</p>
+                            <h3 className="work-item-title text-focus">{work.title}</h3>
+                            <p className="work-item-category text-focus">{work.category}</p>
                         </div>
                     </div>
                 ))}
@@ -152,7 +163,7 @@ export default function WorkGallery() {
                         onClick={() => setSelectedWork(null)}
                     >
                         <div
-                            className="work-modal-content"
+                            className={`work-modal-content${selectedWork ? " is-open" : ""}`}
                             onClick={(e) => e.stopPropagation()}
                         >
                             <button
@@ -173,13 +184,10 @@ export default function WorkGallery() {
                             </div>
 
                             <div className="work-modal-details">
-                                <h2>{selectedWork.title}</h2>
-
-                                <div className="work-modal-meta">
-                                    <span>{selectedWork.category}</span>
-                                    <span className="separator">|</span>
-                                    <span>{selectedWork.roles.join(" & ")}</span>
-                                </div>
+                                <h2 className="work-modal-role">{selectedWork.roles.join(" & ")}</h2>
+                                <h3 className="work-modal-type">{selectedWork.title} — {selectedWork.category}</h3>
+                                
+                                <div className="work-modal-divider"></div>
 
                                 <p className="work-modal-desc">
                                     {selectedWork.desc}

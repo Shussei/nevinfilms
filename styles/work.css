@@ -64,29 +64,31 @@
   z-index: 5;
 }
 
-.work-item-overlay h3 {
+.work-item-title {
   font-family: var(--font-body);
-  font-size: 1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: #fff;
   margin-bottom: 0.2rem;
 }
 
-.work-item-overlay p {
+.work-item-category {
   font-family: var(--font-body);
-  font-size: 0.7rem;
+  font-size: 0.6rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--color-text-dim);
+  opacity: 0.7;
 }
 
 /* Modal */
 .work-modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.95);
-  backdrop-filter: blur(10px);
+  background: rgba(5, 5, 5, 0.98);
+  backdrop-filter: blur(25px);
   z-index: 10000;
   display: flex;
   align-items: center;
@@ -98,60 +100,109 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  background: rgba(0, 0, 0, 0.95);
+  background: #050505;
   position: relative;
-  overflow-y: auto; /* Enable scroll on content if needed */
+  overflow-y: auto;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s cubic-bezier(0.2, 0, 0.2, 1), transform 0.5s cubic-bezier(0.2, 0, 0.2, 1);
+}
+
+.work-modal-content.is-open {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .work-modal-close {
   position: absolute;
-  top: 1rem;
-  right: 1rem;
+  top: 1.5rem;
+  right: 1.5rem;
   background: rgba(0,0,0,0.5);
   border: 1px solid rgba(255,255,255,0.2);
   color: #fff;
-  padding: 0.5rem 1rem;
+  padding: 0.6rem 1.2rem;
   font-size: 0.7rem;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.2rem;
   z-index: 100;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.work-modal-close:hover {
+  background: #fff;
+  color: #000;
 }
 
 .work-modal-video {
+  position: relative;
   width: 100%;
   aspect-ratio: 16 / 9;
   flex-shrink: 0;
+  background: #000;
+  overflow: hidden;
 }
 
 .work-modal-iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   border: none;
 }
 
 .work-modal-details {
-  padding: 1.5rem;
-  flex-shrink: 0; /* Keep size stable */
+  padding: 2.5rem 1.5rem;
+  max-width: 800px;
+  margin: 0 auto;
+  flex-grow: 1;
 }
 
-.work-modal-details h2 {
+.work-modal-role {
   font-family: var(--font-display);
-  font-size: 1.5rem;
+  font-size: 1.75rem;
+  font-weight: 700;
   color: #fff;
-  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.4rem;
 }
 
-.work-modal-meta {
-  font-size: 0.75rem;
-  color: var(--color-accent);
-  margin-bottom: 1rem;
-  letter-spacing: 0.2em;
+.work-modal-type {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: var(--color-text-dim);
   text-transform: uppercase;
+  letter-spacing: 0.3em;
+  opacity: 0.8;
+}
+
+.work-modal-divider {
+  width: 40px;
+  height: 1px;
+  background: var(--color-accent);
+  margin: 1.5rem 0;
+  opacity: 0.4;
 }
 
 .work-modal-desc {
-  font-size: 0.9rem;
-  line-height: 1.6;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.8;
   color: var(--color-text-dim);
+  font-weight: 300;
+}
+
+/* Tap Feedback for Mobile */
+.work-grid-item:active, .work-modal-close:active {
+  transform: scale(0.96) !important;
+  transition: transform 0.1s ease;
+}
+
+/* ─── Body Scroll Lock Class ─── */
+body.modal-open {
+  overflow: hidden !important;
 }
 
 /* ─── Mobile Refinements (< 768px) ─── */
@@ -244,7 +295,7 @@
   }
 
   .work-grid-item:hover {
-    transform: scale(1.05);
+    transform: scale(1.02);
     border-color: rgba(255, 255, 255, 0.2);
     z-index: 10;
   }
@@ -252,6 +303,51 @@
   .work-grid-item:hover .work-hover-image {
     opacity: 1;
     filter: grayscale(0%);
+    transform: scale(1.08); /* Slight zoom in */
+  }
+
+  /* 2-Column Modal Layout */
+  .work-modal-content {
+    flex-direction: row;
+    align-items: stretch;
+    width: 95vw;
+    height: 85vh;
+    max-height: 900px;
+    margin: auto;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.1);
+    overflow: hidden;
+  }
+
+  .work-modal-video {
+    width: 65%;
+    height: 100%;
+    max-height: 85vh;
+    aspect-ratio: auto;
+    border-right: 1px solid rgba(255,255,255,0.05);
+  }
+
+  /* Video within modal logic to respect 70vh rule if needed */
+  .work-modal-iframe {
+    max-height: 70vh; /* Primary requested constraint */
+    align-self: center;
+  }
+
+  .work-modal-details {
+    width: 35%;
+    height: 100%;
+    padding: 5rem 4rem;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: #080808;
+    margin: 0;
+  }
+
+  .work-modal-close {
+    top: 2rem;
+    right: 2rem;
   }
 
   .work-hover-iframe {

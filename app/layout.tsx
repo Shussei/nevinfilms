@@ -4,6 +4,7 @@ import "./globals.css";
 import AnimatedBackground from "@/components/AnimatedBackground";
 import SmoothScroller from "@/components/SmoothScroller";
 import CustomCursor from "@/components/CustomCursor";
+import MobileReveal from "@/components/MobileReveal";
 
 const playfair = Playfair_Display({
   variable: "--font-display",
@@ -34,7 +35,10 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${playfair.variable} ${inter.variable}`} suppressHydrationWarning>
         <CustomCursor />
+        <MobileReveal />
         <AnimatedBackground />
+        <div className="section-fade-top" />
+        <div className="section-fade-bottom" />
         <div className="cinematic-overlay" />
         <SmoothScroller>
           {children}

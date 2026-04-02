@@ -14,8 +14,9 @@ export default function SmoothScroller({ children }: { children: ReactNode }) {
     let lenis: Lenis;
     const isMobile = window.matchMedia("(max-width: 767px)").matches;
     
-    // ─── HARD DISABLE FOR MOBILE ───
+    // ─── HARD DISABLE & CLEANUP FOR MOBILE ───
     if (isMobile) {
+      ScrollTrigger.getAll().forEach(st => st.kill());
       (window as any).lenis = undefined;
       return;
     }

@@ -48,6 +48,13 @@
   transition: filter 0.8s ease, transform 0.8s ease;
 }
 
+/* Colorize on visibility for mobile cinematic experience */
+@media (max-width: 1023px) {
+  .about-image.is-visible img {
+    filter: grayscale(0);
+  }
+}
+
 .about-content {
   width: 100%;
   max-width: 600px;

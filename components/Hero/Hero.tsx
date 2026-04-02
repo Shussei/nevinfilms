@@ -10,10 +10,18 @@ export default function Hero() {
     const isDesktop = useIsDesktop();
 
     useEffect(() => {
+        // ─── HYDRATION GUARD ───
+        if (isDesktop === null) return;
+
         const ctx = gsap.context(() => {
             const mm = gsap.matchMedia();
             const navElement = document.querySelector(".cinematic-nav");
+            
+            // Initial states (Hidden)
             if (navElement) gsap.set(navElement, { opacity: 0, y: -20 });
+            gsap.set(".hero-logo-container", { opacity: 1, display: "flex", pointerEvents: "auto" });
+            gsap.set(".hero-titles", { opacity: 0, y: isDesktop ? 40 : 20 });
+            gsap.set(".hero-background img", { opacity: 0, scale: 1.1 });
 
             // ─── Base Intro (Universal) ───
             const tl = gsap.timeline();
@@ -29,24 +37,29 @@ export default function Hero() {
                 scale: 1.1,
                 duration: 1.2,
                 ease: "power2.inOut",
+                onStart: () => {
+                   gsap.set(".hero-logo-container", { pointerEvents: "none" });
+                },
                 onComplete: () => {
                     gsap.set(".hero-logo-container", { display: "none" });
                 }
             });
 
+            // 3. Background Fade In
             tl.to(".hero-background img", {
                 opacity: 0.5,
                 scale: 1,
-                duration: 2.0,
+                duration: 1.8,
                 ease: "power2.out",
-            }, "-=0.8");
+            }, "-=0.4");
 
+            // 4. Content Fade In (Delayed to follow logo)
             tl.to(".hero-titles", {
                 opacity: 1,
                 y: 0,
-                duration: 1.5,
+                duration: 1.2,
                 ease: "power3.out",
-            }, "-=1.2");
+            }, ">-0.4"); // Slightly overlap with background but after logo is mostly gone
 
             if (navElement) {
                 tl.to(navElement, {
@@ -54,7 +67,7 @@ export default function Hero() {
                     y: 0,
                     duration: 1.0,
                     ease: "power3.out"
-                }, "-=0.8");
+                }, "-=0.6");
             }
 
             // ─── Desktop-Only Cinematic Pipeline (>= 1024px) ───
@@ -100,7 +113,7 @@ export default function Hero() {
         }, container);
 
         return () => ctx.revert();
-    }, []);
+    }, [isDesktop]);
 
     return (
         <div ref={container} className="hero-container">
@@ -117,7 +130,7 @@ export default function Hero() {
 
             {/* Main Content Page */}
             <div className="hero-section hero-main-page">
-                <div className="hero-background">
+                <div className="hero-background parallax-lite">
                     <img src="/hero-bg.png" alt="Cinematic Background" loading="lazy" />
                     <div className="hero-overlay"></div>
                 </div>
@@ -126,7 +139,7 @@ export default function Hero() {
 
                 <div className="hero-titles">
                     <h1 className="hero-main-title">NEVIN JOSEPH</h1>
-                    <p className="hero-subtitle">DIRECTOR</p>
+                    <p className="hero-subtitle parallax-lite">DIRECTOR</p>
                 </div>
             </div>
         </div>

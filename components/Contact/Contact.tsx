@@ -52,13 +52,13 @@ export default function Contact() {
     return (
         <div className="contact-inner">
             {/* Display heading */}
-            <div className="contact-heading-wrap gsap-reveal">
+            <div className="contact-heading-wrap gsap-reveal mobile-reveal">
                 <p className="contact-eyebrow">Get in touch</p>
                 <h2 className="contact-display">CONTACT</h2>
             </div>
 
             {/* Contact rows */}
-            <div className="contact-rows gsap-reveal">
+            <div className="contact-rows gsap-reveal mobile-reveal delay-1">
                 {items.map((item) => (
                     <a
                         key={item.label}
@@ -75,7 +75,7 @@ export default function Contact() {
                 ))}
             </div>
 
-            <p className="contact-tagline gsap-reveal">
+            <p className="contact-tagline gsap-reveal mobile-reveal delay-2">
                 Available for film, commercial &amp; creative collaborations.
             </p>
         </div>

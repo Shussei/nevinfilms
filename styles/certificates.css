@@ -129,15 +129,16 @@
 }
 
 .cert-modal-content {
-    width: 90vw;
+    width: 95vw;
     max-width: 1200px;
     height: auto;
-    max-height: 90vh;
+    max-height: 98vh;
     background: #0a0a0a;
     border: 1px solid rgba(255,255,255,0.1);
     position: relative;
-    overflow: hidden;
+    overflow-y: auto; /* Allow full scroll if content overflows */
     animation: slideUp 0.6s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+    border-radius: 4px;
 }
 
 @keyframes slideUp {
@@ -168,7 +169,8 @@
 .cert-modal-body {
     display: grid;
     grid-template-columns: 1.2fr 0.8fr;
-    height: 100%;
+    height: auto;
+    min-height: 100%;
 }
 
 .cert-modal-image {

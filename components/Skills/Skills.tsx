@@ -3,9 +3,10 @@ import "@/styles/skills.css";
 export default function Skills() {
     return (
         <div className="skills-container">
+            <div className="section-divider"></div>
 
-            <div className="skills-block gsap-reveal">
-                <h2>Creative Skills</h2>
+            <div className="skills-block gsap-reveal mobile-reveal">
+                <h2 className="text-focus">Creative Skills</h2>
                 <ul className="skills-list">
                     <li>Visual Storytelling</li>
                     <li>Content Development</li>
@@ -14,8 +15,8 @@ export default function Skills() {
                 </ul>
             </div>
 
-            <div className="skills-block gsap-reveal">
-                <h2>Technical Skills</h2>
+            <div className="skills-block gsap-reveal mobile-reveal">
+                <h2 className="text-focus">Technical Skills</h2>
                 <ul className="skills-list">
                     <li>Premiere Pro & Final Cut Pro</li>
                     <li>Photoshop</li>

@@ -23,23 +23,7 @@ export default function HorizontalScroller({ children }: Props) {
         if (isMobile) {
             ScrollTrigger.getAll().forEach(st => st.kill());
             gsap.killTweensOf("*");
-
-            // Lightweight Mobile Reveals (IntersectionObserver)
-            const revealObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        gsap.fromTo(entry.target, 
-                            { y: 20, opacity: 0 },
-                            { y: 0, opacity: 1, duration: 0.6, ease: "power2.out" }
-                        );
-                        revealObserver.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.2 });
-
-            document.querySelectorAll(".gsap-reveal").forEach(el => revealObserver.observe(el));
-
-            return () => revealObserver.disconnect();
+            return;
         }
 
         const ctx = gsap.context(() => {
