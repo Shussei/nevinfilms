@@ -7,60 +7,76 @@ import { useIsDesktop } from "@/hooks/useIsDesktop";
 
 const WORKS = [
     {
+        id: "0",
+        youtubeId: "OT9_KA6bgz0",
+        title: "2026 Showreel",
+        category: "Showreel",
+        roles: ["Editor"],
+        desc: "Editor for Govind K Saji's 2026 Director/DP Showreel, dynamically showcasing a curated selection of cinematic works through high-energy visual storytelling."
+    },
+    {
         id: "1",
         youtubeId: "m2nR8E1W-cQ",
         title: "Janeeva Limited",
         category: "Commercial",
-        desc: "A stylized commercial designed to elevate the brand's aesthetic."
+        roles: ["Editor"],
+        desc: "Editor for this stylized commercial, focusing on rhythmic pacing and visual flow to elevate the brand's aesthetic."
     },
     {
         id: "2",
         youtubeId: "ARxlarNq5Dk",
         title: "Sangeeth Hospital 01",
         category: "Commercial",
-        desc: "A healthcare film focusing on human connection and warmth."
+        roles: ["Director"],
+        desc: "Directed this healthcare film, emphasizing human connection and warmth through authentic storytelling and careful performance guidance."
     },
     {
         id: "3",
         youtubeId: "I3KqGtY3Hbk",
         title: "Sangeeth Hospital 02",
         category: "Commercial",
-        desc: "Focused on scale and reliability with controlled cinematography."
+        roles: ["Director", "Editor"],
+        desc: "Director and Editor for this commercial, balancing large-scale visuals with precision editing to communicate reliability and professional excellence."
     },
     {
         id: "4",
         youtubeId: "-mh3UHYfTow",
         title: "To Be Continued",
         category: "Short Film",
-        desc: "Exploring tension through contrast and pacing."
+        roles: ["Director", "Editor", "DOP"],
+        desc: "Director, Editor, and Director of Photography for this short film, meticulously crafting tension through high-contrast cinematography and pulse-quickening pacing."
     },
     {
         id: "5",
         youtubeId: "J99P5NVyjyc",
         title: "Hamurabi",
         category: "Music Video",
-        desc: "Dynamic lighting synced with rhythm."
+        roles: ["Director", "Editor"],
+        desc: "Directed and Edited this music video, creating a seamless fusion of dynamic lighting and rhythmic cuts to bring the track's energy to life."
     },
     {
         id: "6",
         youtubeId: "b213XARRlMA",
         title: "Dear Delhi Police",
         category: "Social Awareness",
-        desc: "Raw storytelling grounded in reality."
+        roles: ["DOP", "Editor"],
+        desc: "Director of Photography and Editor for this social awareness film, utilizing raw, grounded cinematography and honest editing to tell a powerful real-world story."
     },
     {
         id: "7",
         youtubeId: "Ieat2PHUPwg",
-        title: "Krishna — Menon Associates",
+        title: "Krishna - Menon Associates",
         category: "Architectural",
+        roles: ["Cinematography"],
         desc: "A cinematic walkthrough of 'Krishna,' a residential haven in Aluva designed by Menon Associates, part of the Silpaayanam series.",
         customThumbnail: "/krishna-thumb.png"
     },
     {
         id: "8",
         youtubeId: "yq08mco-pA4",
-        title: "Experimental Visuals",
-        category: "Visual Project",
+        title: "Sreelakam - Menon Associates",
+        category: "Architectural",
+        roles: ["Cinematography"],
         desc: "A rhythmic journey through light and movement, showcasing innovative camera pacing."
     }
 ];
@@ -162,7 +178,7 @@ export default function WorkGallery() {
                                 <div className="work-modal-meta">
                                     <span>{selectedWork.category}</span>
                                     <span className="separator">|</span>
-                                    <span>Cinematography</span>
+                                    <span>{selectedWork.roles.join(" & ")}</span>
                                 </div>
 
                                 <p className="work-modal-desc">
