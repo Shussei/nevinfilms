@@ -62,6 +62,7 @@ export default function NavBar() {
     };
 
     const handleNavClick = (index: number) => {
+        setActiveIndex(index); // Immediate UI update
         if (isMenuOpen) toggleMenu();
 
         if (isDesktop) {
@@ -91,7 +92,7 @@ export default function NavBar() {
             <div className="scroll-progress-container">
                 <div 
                     className="scroll-progress-bar" 
-                    style={{ width: `${scrollProgress}%` }}
+                    style={{ transform: `scaleX(${scrollProgress / 100})` }}
                 />
             </div>
 

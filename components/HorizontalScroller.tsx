@@ -114,13 +114,14 @@ export default function HorizontalScroller({ children }: Props) {
                         opacity: 1, 
                         filter: "brightness(1)", 
                         duration: 1,
-                        ease: "power2.inOut"
+                        ease: "power2.inOut",
+                        onComplete: () => {
+                            // Backup dispatch for precision
+                            window.dispatchEvent(new CustomEvent("sectionChange", { 
+                                detail: { activeIndex: i } 
+                            }));
+                        }
                     }, moveStartTime);
-
-                    // Background Fades
-                    if (i === 1 && animBg) {
-                        mainTimeline.to(animBg, { opacity: 0.4, duration: 0.8 }, moveStartTime);
-                    }
                 }
 
                 // --- B. ARRIVAL POINT (LOCK INDEX HERE) ---

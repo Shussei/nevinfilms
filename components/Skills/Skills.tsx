@@ -5,7 +5,7 @@ export default function Skills() {
         <div className="skills-container">
             <div className="section-divider"></div>
 
-            <div className="skills-block gsap-reveal mobile-reveal">
+            <div className="skills-block gsap-reveal mobile-reveal delay-1">
                 <h2 className="text-focus">Creative Skills</h2>
                 <ul className="skills-list">
                     <li>Visual Storytelling</li>
@@ -15,7 +15,7 @@ export default function Skills() {
                 </ul>
             </div>
 
-            <div className="skills-block gsap-reveal mobile-reveal">
+            <div className="skills-block gsap-reveal mobile-reveal delay-2">
                 <h2 className="text-focus">Technical Skills</h2>
                 <ul className="skills-list">
                     <li>Premiere Pro & Final Cut Pro</li>

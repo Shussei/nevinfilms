@@ -142,6 +142,68 @@
   overflow: hidden;
 }
 
+.work-modal-pdf {
+  position: relative;
+  width: 100%;
+  height: 70vh;
+  flex-shrink: 0;
+  background: #0f1115;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ─── PDF VIEWER STYLES ─── */
+.pdf-viewer-container {
+  padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.pdf-page-wrapper {
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  background: #222;
+  transition: transform 0.3s ease;
+}
+
+.pdf-page-wrapper:hover {
+  transform: scale(1.01);
+}
+
+.pdf-page {
+  max-width: 100% !important;
+  height: auto !important;
+}
+
+.pdf-loading, .pdf-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  min-height: 300px;
+  color: var(--color-accent);
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  gap: 1.5rem;
+}
+
+.pdf-spinner {
+  width: 40px;
+  height: 40px;
+  border: 2px solid rgba(212, 175, 55, 0.1);
+  border-top-color: var(--color-accent);
+  border-radius: 50%;
+  animation: pdf-spin 1s linear infinite;
+}
+
+@keyframes pdf-spin {
+  to { transform: rotate(360deg); }
+}
+
 .work-modal-iframe {
   position: absolute;
   top: 0;
@@ -319,18 +381,27 @@ body.modal-open {
     overflow: hidden;
   }
 
-  .work-modal-video {
+  .work-modal-video, .work-modal-pdf {
     width: 65%;
     height: 100%;
     max-height: 85vh;
     aspect-ratio: auto;
     border-right: 1px solid rgba(255,255,255,0.05);
+    display: flex; /* Ensure centering works */
+    align-items: center;
+    justify-content: center;
+    background: #000;
   }
 
-  /* Video within modal logic to respect 70vh rule if needed */
-  .work-modal-iframe {
-    max-height: 70vh; /* Primary requested constraint */
+  /* Specific sizing for viewers */
+  .work-modal-iframe, .pdf-viewer-container {
+    max-height: 85vh; /* Allow more vertical space if needed */
+    width: 100%;
     align-self: center;
+  }
+
+  .work-modal-pdf {
+    overflow-y: auto; /* Allow internal PDF scroll */
   }
 
   .work-modal-details {

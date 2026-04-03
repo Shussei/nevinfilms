@@ -1,0 +1,142 @@
+/* ─── Global Background Controller ─── */
+.global-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-color: #000;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* ─── Base Grid & Layers ─── */
+.bg-layer {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 1s cubic-bezier(0.165, 0.84, 0.44, 1);
+  pointer-events: none;
+  visibility: hidden;
+  will-change: opacity;
+}
+
+.bg-layer.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* ─── HOME: Transparent (Shows Hero Photo) ─── */
+.bg-home {
+  background: transparent;
+}
+
+/* ─── ABOUT: High-Perception Rift Gradient ─── */
+.bg-about {
+  /* Vibrant Blue-Cyan Gradient */
+  background: radial-gradient(circle at 60% 40%, rgba(55, 75, 120, 1) 0%, rgba(5, 5, 25, 1) 50%, rgba(0, 0, 0, 1) 100%);
+  animation: about-pulse 15s ease-in-out infinite alternate;
+}
+
+@keyframes about-pulse {
+  0% { transform: scale(1) translate(0, 0); }
+  100% { transform: scale(1.3) translate(60px, -40px); }
+}
+
+/* ─── SKILLS: Cinematic Light Leak (New Design) ─── */
+.bg-skills {
+  background-color: #030303;
+  overflow: hidden;
+}
+
+.bg-skills::before {
+  content: "";
+  position: absolute;
+  top: -20%;
+  left: -20%;
+  width: 80%;
+  height: 80%;
+  background: radial-gradient(circle at center, rgba(212, 175, 55, 0.25) 0%, transparent 70%);
+  filter: blur(80px);
+  animation: light-leak-main 20s infinite alternate ease-in-out;
+}
+
+.bg-skills::after {
+  content: "";
+  position: absolute;
+  bottom: -10%;
+  right: -10%;
+  width: 60%;
+  height: 60%;
+  background: radial-gradient(circle at center, rgba(55, 120, 212, 0.15) 0%, transparent 60%);
+  filter: blur(100px);
+  animation: light-leak-accent 25s infinite alternate-reverse ease-in-out;
+}
+
+@keyframes light-leak-main {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(30%, 20%) scale(1.2); }
+}
+
+@keyframes light-leak-accent {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(-20%, -15%) scale(1.1); }
+}
+
+/* ─── WORK: Prominent Grain & Dynamic Texture ─── */
+.bg-work {
+  background-color: #020202;
+}
+
+.bg-work::before {
+  content: "";
+  position: absolute;
+  inset: -100%;
+  background-image: url("https://www.transparenttextures.com/patterns/60-lines.png");
+  opacity: 0.28; /* Maximum visible grain texture */
+  animation: grain-shift 4s steps(6) infinite;
+}
+
+.bg-work::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, transparent 40%, rgba(0, 0, 0, 1) 100%);
+}
+
+/* ─── CONTACT: Strictly Clean Black ─── */
+.bg-contact {
+  background: #000;
+}
+
+/* ─── MOBILE: MAX PERCEPTION OPTIMIZATION ─── */
+@media (max-width: 767px) {
+  .bg-about {
+    animation: about-pulse 20s ease-in-out infinite alternate;
+    background: radial-gradient(circle at 60% 40%, rgba(70, 90, 150, 1) 0%, rgba(0, 0, 0, 1) 100%);
+  }
+
+  /* Mobile Light Leaks - More Intense */
+  .bg-skills::before {
+    opacity: 0.45;
+    width: 120%;
+    height: 120%;
+  }
+
+  .bg-work::before {
+    animation: grain-shift 5s steps(4) infinite;
+    opacity: 0.35 !important;
+  }
+}
+
+/* ─── SECTION-AWARE VIGNETTE CONTROLS ─── */
+/* Ensure Home and Contact are depth-less PURE BLACK (Hiding the vignette entirely) */
+.global-bg[data-active-section="home"] .cinematic-overlay,
+.global-bg[data-active-section="contact"] .cinematic-overlay {
+  display: none !important;
+  opacity: 0 !important;
+}
+
+/* About/Skills/Work use the vignette for cinematic focus */
+.global-bg:not([data-active-section="home"]):not([data-active-section="contact"]) .cinematic-overlay {
+  display: block;
+  opacity: 1;
+}

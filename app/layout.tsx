@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
-import AnimatedBackground from "@/components/AnimatedBackground";
+import GlobalBackgroundController from "@/components/GlobalBackgroundController";
 import SmoothScroller from "@/components/SmoothScroller";
 import CustomCursor from "@/components/CustomCursor";
 import MobileReveal from "@/components/MobileReveal";
@@ -36,13 +36,12 @@ export default function RootLayout({
       <body className={`${playfair.variable} ${inter.variable}`} suppressHydrationWarning>
         <CustomCursor />
         <MobileReveal />
-        <AnimatedBackground />
-        <div className="section-fade-top" />
-        <div className="section-fade-bottom" />
-        <div className="cinematic-overlay" />
-        <SmoothScroller>
-          {children}
-        </SmoothScroller>
+        <GlobalBackgroundController />
+        <main>
+          <SmoothScroller>
+            {children}
+          </SmoothScroller>
+        </main>
       </body>
     </html>
   );

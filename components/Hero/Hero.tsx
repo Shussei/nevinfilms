@@ -117,6 +117,12 @@ export default function Hero() {
 
     return (
         <div ref={container} className="hero-container">
+            {/* Background Layer (FIXED) */}
+            <div className="hero-background">
+                <img src="/hero-bg.png" alt="Nevin Joseph Background" />
+                <div className="hero-overlay"></div>
+            </div>
+
             {/* Branding Intro Page */}
             <div className="hero-section hero-intro-page">
                 <div className="hero-logo-container">
@@ -130,11 +136,6 @@ export default function Hero() {
 
             {/* Main Content Page */}
             <div className="hero-section hero-main-page">
-                <div className="hero-background parallax-lite">
-                    <img src="/hero-bg.png" alt="Cinematic Background" loading="lazy" />
-                    <div className="hero-overlay"></div>
-                </div>
-
                 <div className="film-grain"></div>
 
                 <div className="hero-titles">

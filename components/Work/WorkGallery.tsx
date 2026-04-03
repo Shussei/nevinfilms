@@ -1,9 +1,12 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import "@/styles/work.css";
 import { useIsDesktop } from "@/hooks/useIsDesktop";
+
+const PDFViewer = dynamic(() => import("./PDFViewer"), { ssr: false });
 
 const WORKS = [
     {
@@ -78,11 +81,29 @@ const WORKS = [
         category: "Architectural",
         roles: ["Cinematography"],
         desc: "A rhythmic journey through light and movement, showcasing innovative camera pacing."
+    },
+    {
+        id: "9",
+        title: "PITCH DECK: VI",
+        category: "Pitch",
+        roles: ["Director", "Creative Lead"],
+        desc: "A comprehensive project deck for 'VI', detailing the visual language, world-building, and artistic vision for the project.",
+        pdfUrl: "/pitches/PITCH DECK for VI.pdf",
+        customThumbnail: "https://images.unsplash.com/photo-1544911845-1f34a3eb46b1?q=80&w=2070&auto=format&fit=crop"
+    },
+    {
+        id: "10",
+        title: "PITCH DECK",
+        category: "Pitch",
+        roles: ["Creative Producer"],
+        desc: "Visual development deck focusing on character storyboards and stylistic narrative progression.",
+        pdfUrl: "/pitches/pitch-deck.pdf",
+        customThumbnail: "https://images.unsplash.com/photo-1512446816042-444d641267d4?q=80&w=2070&auto=format&fit=crop"
     }
 ];
 
 export default function WorkGallery() {
-    const [selectedWork, setSelectedWork] = useState<typeof WORKS[0] | null>(null);
+    const [selectedWork, setSelectedWork] = useState<any | null>(null);
     const [hoveredWork, setHoveredWork] = useState<string | null>(null);
     const [mounted, setMounted] = useState(false);
     const isDesktop = useIsDesktop();
@@ -109,10 +130,10 @@ export default function WorkGallery() {
 
             <div className="section-divider"></div>
             <div className="work-grid">
-                {WORKS.map((work) => (
+                {WORKS.map((work, index) => (
                     <div
                         key={work.id}
-                        className="work-grid-item gsap-reveal mobile-reveal mobile-reveal-image parallax-lite"
+                        className={`work-grid-item gsap-reveal mobile-reveal mobile-reveal-image parallax-lite delay-${(index % 3) + 1}`}
                         onClick={() => setSelectedWork(work)}
                         onMouseEnter={() => isDesktop && setHoveredWork(work.id)}
                         onMouseLeave={() => isDesktop && setHoveredWork(null)}
@@ -124,13 +145,13 @@ export default function WorkGallery() {
                             loading="lazy"
                             onError={(e) => {
                                 const target = e.target as HTMLImageElement;
-                                if (!work.customThumbnail && !target.src.includes("hqdefault")) {
+                                if (!work.customThumbnail && work.youtubeId && !target.src.includes("hqdefault")) {
                                     target.src = `https://img.youtube.com/vi/${work.youtubeId}/hqdefault.jpg`;
                                 }
                             }}
                         />
 
-                        {isDesktop && (
+                        {isDesktop && work.youtubeId && (
                             <>
                                 <iframe
                                     className={`work-hover-iframe${hoveredWork === work.id ? " is-visible" : ""}`}
@@ -161,6 +182,7 @@ export default function WorkGallery() {
                     <div
                         className="work-modal-overlay"
                         onClick={() => setSelectedWork(null)}
+                        onWheel={(e) => e.stopPropagation()}
                     >
                         <div
                             className={`work-modal-content${selectedWork ? " is-open" : ""}`}
@@ -173,15 +195,25 @@ export default function WorkGallery() {
                                 ✕ CLOSE
                             </button>
 
-                            <div className="work-modal-video">
-                                <iframe
-                                    src={`https://www.youtube.com/embed/${selectedWork.youtubeId}?autoplay=1&controls=1&rel=0`}
-                                    title={selectedWork.title}
-                                    allow="autoplay; encrypted-media"
-                                    allowFullScreen
-                                    className="work-modal-iframe"
-                                />
-                            </div>
+                            {selectedWork.pdfUrl ? (
+                                <div 
+                                    className="work-modal-pdf"
+                                    onContextMenu={(e) => e.preventDefault()}
+                                    onWheel={(e) => e.stopPropagation()}
+                                >
+                                    <PDFViewer file={selectedWork.pdfUrl} />
+                                </div>
+                            ) : (
+                                <div className="work-modal-video">
+                                    <iframe
+                                        src={`https://www.youtube.com/embed/${selectedWork.youtubeId}?autoplay=1&controls=1&rel=0`}
+                                        title={selectedWork.title}
+                                        allow="autoplay; encrypted-media"
+                                        allowFullScreen
+                                        className="work-modal-iframe"
+                                    />
+                                </div>
+                            )}
 
                             <div className="work-modal-details">
                                 <h2 className="work-modal-role">{selectedWork.roles.join(" & ")}</h2>
