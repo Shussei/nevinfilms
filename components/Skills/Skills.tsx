@@ -23,6 +23,7 @@ export default function Skills() {
                     <li>Adobe Audition</li>
                     <li>Lighting Composition</li>
                     <li>Cinematography/Camera Handling</li>
+                    <li>Drone Operations</li>
                 </ul>
             </div>
 
