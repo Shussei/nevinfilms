@@ -21,7 +21,6 @@ export default function Skills() {
                     <li>Premiere Pro & Final Cut Pro</li>
                     <li>Photoshop</li>
                     <li>Adobe Audition</li>
-                    <li>Lighting Composition</li>
                     <li>Cinematography/Camera Handling</li>
                     <li>Drone Operations</li>
                 </ul>
