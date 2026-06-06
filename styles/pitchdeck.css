@@ -255,8 +255,8 @@
         overflow-y: auto;
     }
     .pitch-modal-pdf {
-        padding: 1.5rem;
-        height: 60vh;
+        padding: 0;
+        height: 55vh;
         border-right: none;
         border-bottom: 1px solid rgba(255,255,255,0.05);
     }
@@ -273,5 +273,42 @@
         padding: 60px 20px !important;
         overflow: visible !important;
     }
+    /* Always show the overlay label on touch */
+    .pitchdeck-hover-overlay {
+        opacity: 0.7;
+        background: rgba(0,0,0,0.35);
+    }
+    /* Collapse grid to single column on small phones */
+    .pitchdeck-grid {
+        grid-template-columns: 1fr;
+    }
+    /* Active tap feedback */
+    .pitchdeck-card:active {
+        transform: scale(0.97);
+    }
+    /* Pitch modal fills screen fully on mobile */
+    .pitch-modal-content {
+        width: 100vw;
+        height: 100dvh;
+        border-radius: 0;
+        border: none;
+    }
+    .pitch-modal-close {
+        top: auto;
+        bottom: 1.5rem;
+        right: 50%;
+        transform: translateX(50%);
+        padding: 0.75rem 2rem;
+        background: rgba(255,255,255,0.15);
+        backdrop-filter: blur(12px);
+        border-radius: 100px;
+        min-height: 44px;
+        min-width: 44px;
+    }
+    .pitch-modal-pdf {
+        height: 52vh;
+    }
+    .pitch-modal-details {
+        padding: 1.5rem 1.25rem 6rem;
+    }
 }
-

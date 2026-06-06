@@ -10,14 +10,17 @@ type SectionType = "home" | "about" | "skills" | "work" | "pitchdeck" | "contact
 
 export default function GlobalBackgroundController() {
     const [activeSection, setActiveSection] = useState<SectionType>("home");
+    const [isMobile, setIsMobile] = useState(false);
     const observerRef = useRef<IntersectionObserver | null>(null);
 
     useEffect(() => {
-        const isMobile = window.innerWidth < 768;
+        const mobile = window.innerWidth < 768;
+        setIsMobile(mobile);
+        const isMobileLocal = mobile;
 
         // ─── DESKTOP: LISTEN TO SCROLLER EVENTS ───
         const handleSectionChange = (e: any) => {
-            if (isMobile) return;
+            if (isMobileLocal) return;
             const index = e.detail.activeIndex;
             const sections: SectionType[] = ["home", "about", "skills", "work", "pitchdeck", "contact"];
             if (sections[index]) {
@@ -28,7 +31,7 @@ export default function GlobalBackgroundController() {
         window.addEventListener("sectionChange", handleSectionChange);
 
         // ─── MOBILE: INTERSECTION OBSERVER ───
-        if (isMobile) {
+        if (isMobileLocal) {
             const options = {
                 threshold: 0.1, // Trigger when 10% is visible
                 rootMargin: "-25% 0px -25% 0px" // Trigger as section enters the middle half of the screen
@@ -76,8 +79,8 @@ export default function GlobalBackgroundController() {
                         raysSpeed={1.0}
                         lightSpread={0.5}
                         rayLength={3.0}
-                        followMouse={true}
-                        mouseInfluence={0.1}
+                        followMouse={!isMobile}
+                        mouseInfluence={isMobile ? 0 : 0.1}
                         noiseAmount={0.0}
                         distortion={0.0}
                         pulsating={false}
