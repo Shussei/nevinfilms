@@ -39,3 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# large media / pdf assets (hosted externally)
+public/*.pdf
+public/pitches/

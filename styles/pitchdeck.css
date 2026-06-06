@@ -189,12 +189,20 @@
 .pitch-modal-pdf {
     background: #111;
     display: flex;
-    align-items: center;
+    align-items: stretch;
     justify-content: center;
-    padding: 2rem;
+    padding: 0;
     height: 100%;
-    overflow-y: auto;
+    overflow: hidden;
     border-right: 1px solid rgba(255,255,255,0.05);
+}
+
+.pitch-drive-iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+    background: #111;
 }
 
 .pitch-modal-details {

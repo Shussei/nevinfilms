@@ -1,31 +1,28 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import SplitText from "@/components/SplitText";
 import GradientText from "@/components/GradientText";
 import "@/styles/pitchdeck.css";
 
-const PDFViewer = dynamic(() => import("@/components/Work/PDFViewer"), { ssr: false });
-
 const PITCH_DECKS = [
     {
         id: "pitch-1",
         title: "PITCH DECK: VI",
         category: "Pitch",
-        roles: ["Director", "Creative Lead"],
+        roles: ["Pitch Producer"],
         desc: "A comprehensive project deck for 'VI', detailing the visual language, world-building, and artistic vision for the project.",
-        pdfUrl: "/pitches/PITCH DECK for VI.pdf",
+        pdfUrl: "https://drive.google.com/file/d/12BQMid4u4WPLYodaDxjtcfb7NVUV1-F9/preview",
         customThumbnail: "https://images.unsplash.com/photo-1544911845-1f34a3eb46b1?q=80&w=2070&auto=format&fit=crop"
     },
     {
         id: "pitch-2",
         title: "PITCH DECK",
         category: "Pitch",
-        roles: ["Creative Producer"],
+        roles: ["Pitch Producer"],
         desc: "Visual development deck focusing on character storyboards and stylistic narrative progression.",
-        pdfUrl: "/pitches/pitch-deck.pdf",
+        pdfUrl: "https://drive.google.com/file/d/1dWgCnsGoT3SiezvTALpuES1JABhuweAM/preview",
         customThumbnail: "https://images.unsplash.com/photo-1512446816042-444d641267d4?q=80&w=2070&auto=format&fit=crop"
     }
 ];
@@ -57,7 +54,7 @@ export default function PitchDeck() {
                     className="pitchdeck-title gsap-reveal mobile-reveal"
                     tag="h2"
                 />
-                
+
                 <div className="pitchdeck-grid">
                     {PITCH_DECKS.map((deck) => (
                         <div
@@ -89,24 +86,29 @@ export default function PitchDeck() {
 
             {/* Pitch Deck PDF Modal */}
             {selectedDeck && mounted && createPortal(
-                <div 
-                    className="pitch-modal-overlay" 
+                <div
+                    className="pitch-modal-overlay"
                     onClick={() => setSelectedDeck(null)}
                     onWheel={(e) => e.stopPropagation()}
                 >
-                    <div 
-                        className="pitch-modal-content" 
+                    <div
+                        className="pitch-modal-content"
                         onClick={e => e.stopPropagation()}
                     >
                         <button className="pitch-modal-close" onClick={() => setSelectedDeck(null)}>✕ CLOSE</button>
 
                         <div className="pitch-modal-body">
-                            <div 
+                            <div
                                 className="pitch-modal-pdf"
-                                onContextMenu={(e) => e.preventDefault()}
                                 onWheel={(e) => e.stopPropagation()}
                             >
-                                <PDFViewer file={selectedDeck.pdfUrl} />
+                                <iframe
+                                    src={selectedDeck.pdfUrl}
+                                    className="pitch-drive-iframe"
+                                    title={selectedDeck.title}
+                                    allow="autoplay"
+                                    loading="lazy"
+                                />
                             </div>
                             <div className="pitch-modal-details">
                                 <GradientText
