@@ -6,7 +6,7 @@
 
 .vertical-inner {
   will-change: transform;
-  min-height: 180vh; /* Final forced overflow depth for full certificate visibility */
+  min-height: 100vh; /* Auto-calculate actual height based on content */
 }
 
 .about-hero-section {

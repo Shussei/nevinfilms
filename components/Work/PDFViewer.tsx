@@ -19,7 +19,7 @@ export default function PDFViewer({ file }: PDFViewerProps) {
     // ─── HANDLE RESPONSIVENESS ───
     useEffect(() => {
         const updateWidth = () => {
-            const container = document.querySelector(".work-modal-pdf");
+            const container = document.querySelector(".work-modal-pdf, .pitch-modal-pdf");
             if (container) {
                 setContainerWidth(container.clientWidth - 40); // 20px padding each side
             }

@@ -208,27 +208,7 @@ main {
 }
 
 /* ─── Cinematic Polish & Micro-Interactions ─── */
-.scroll-progress-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background: rgba(255, 255, 255, 0.05);
-  z-index: 2000;
-  pointer-events: none;
-}
 
-.scroll-progress-bar {
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, var(--color-accent) 0%, #fff 100%);
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.2s cubic-bezier(0.23, 1, 0.32, 1);
-  will-change: transform;
-}
 
 .panel-section {
   position: relative;
@@ -374,5 +354,16 @@ button:active, a:active, .interactive:active, .work-grid-item:active {
   .skills-container {
     max-width: 800px;
     margin: 0 auto;
+  }
+}
+
+/* Hide GSAP elements initially to prevent transition flashes */
+@media (min-width: 768px) {
+  .gsap-reveal:not(.split-parent) {
+    opacity: 0;
+  }
+  .split-char {
+    opacity: 0;
+    display: inline-block;
   }
 }

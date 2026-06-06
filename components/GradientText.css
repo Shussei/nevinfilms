@@ -1,0 +1,60 @@
+@keyframes gradient-shift-horizontal {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 300% 50%;
+  }
+}
+
+@keyframes gradient-shift-vertical {
+  0% {
+    background-position: 50% 0%;
+  }
+  100% {
+    background-position: 50% 300%;
+  }
+}
+
+.animated-gradient-text {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: all 0.3s ease;
+  background: transparent !important;
+}
+
+.animated-gradient-text.with-border {
+  padding: 0.5rem 1.25rem;
+  border-radius: 9999px;
+}
+
+/* Border Gradient mask trick to ensure transparent background with gradient border */
+.animated-gradient-text.with-border::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px; /* border width */
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  background-image: var(--gradient-background);
+  background-size: var(--gradient-size);
+  animation: var(--gradient-animation);
+  animation-play-state: var(--gradient-play-state);
+}
+
+.animated-gradient-text .text-content {
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  display: inline-block;
+  background-image: var(--gradient-background);
+  background-size: var(--gradient-size);
+  animation: var(--gradient-animation);
+  animation-play-state: var(--gradient-play-state);
+}

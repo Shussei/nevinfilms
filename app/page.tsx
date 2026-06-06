@@ -2,6 +2,7 @@ import Hero from "@/components/Hero/Hero";
 import HorizontalScroller from "@/components/HorizontalScroller";
 import NavBar from "@/components/NavBar";
 import WorkGallery from "@/components/Work/WorkGallery";
+import PitchDeck from "@/components/PitchDeck";
 import About from "@/components/About/About";
 import Skills from "@/components/Skills/Skills";
 import Contact from "@/components/Contact/Contact";
@@ -26,6 +27,10 @@ export default function Home() {
         </section>
 
         <WorkGallery />
+
+        <section className="panel-section pitch-deck-panel">
+          <PitchDeck />
+        </section>
 
         <section className="panel-section contact-panel">
           <Contact />

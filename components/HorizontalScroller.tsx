@@ -33,6 +33,18 @@ export default function HorizontalScroller({ children }: Props) {
             const sections = gsap.utils.toArray(".panel-section") as HTMLElement[];
             if (sections.length === 0) return;
 
+            // Instantiating ResizeObserver to trigger ScrollTrigger updates when height changes
+            const resizeObserver = new ResizeObserver(() => {
+                ScrollTrigger.refresh();
+            });
+
+            sections.forEach((section) => {
+                const inner = section.querySelector(".vertical-inner");
+                if (inner) {
+                    resizeObserver.observe(inner);
+                }
+            });
+
             // 1. Initial State (Source of Truth)
             gsap.set(sections, { opacity: 0.35, filter: "brightness(0.6)" });
             gsap.set(sections[0], { opacity: 1, filter: "brightness(1)" }); 
@@ -41,6 +53,189 @@ export default function HorizontalScroller({ children }: Props) {
             if (animBg) gsap.set(animBg, { opacity: 0 });
 
             let currentActiveIndex = 0;
+            let lastIndex = -1;
+
+            // Function to animate active section's reveals automatically
+            const playSectionReveals = (index: number) => {
+                const section = sections[index];
+                if (!section) return;
+
+                // SPECIAL TIMELINE FOR ABOUT PANEL (INDEX 1)
+                if (index === 1) {
+                    const name = section.querySelector(".about-name");
+                    const role = section.querySelector(".about-role");
+                    const statement = section.querySelector(".about-statement");
+                    const credentials = section.querySelector(".about-background");
+                    const certTitle = section.querySelector(".certificates-title");
+                    const image = section.querySelector(".about-image");
+                    const gridWrapper = section.querySelector(".chromagrid-wrapper");
+                    
+                    const tl = gsap.timeline({ overwrite: "auto" });
+
+                    if (image) {
+                        gsap.killTweensOf(image);
+                        tl.fromTo(image,
+                            { y: 30, opacity: 0 },
+                            { y: 0, opacity: 1, duration: 0.6, ease: "power2.out" },
+                            0
+                        );
+                    }
+
+                    if (name) {
+                        const chars = name.querySelectorAll(".split-char");
+                        if (chars.length > 0) {
+                            gsap.killTweensOf(chars);
+                            tl.fromTo(chars, 
+                                { y: 20, opacity: 0 }, 
+                                { y: 0, opacity: 1, duration: 0.5, stagger: 0.02, ease: "power2.out" },
+                                0
+                            );
+                        } else {
+                            gsap.killTweensOf(name);
+                            tl.fromTo(name, 
+                                { y: 30, opacity: 0 }, 
+                                { y: 0, opacity: 1, duration: 0.4, ease: "power2.out" },
+                                0
+                            );
+                        }
+                    }
+
+                    if (role) {
+                        gsap.killTweensOf(role);
+                        tl.fromTo(role, 
+                            { y: 20, opacity: 0 }, 
+                            { y: 0, opacity: 1, duration: 0.4, ease: "power2.out" }, 
+                            ">-0.1"
+                        );
+                    }
+
+                    if (statement) {
+                        const chars = statement.querySelectorAll(".split-char");
+                        if (chars.length > 0) {
+                            gsap.killTweensOf(chars);
+                            tl.fromTo(chars, 
+                                { y: 20, opacity: 0 }, 
+                                { y: 0, opacity: 1, duration: 0.7, stagger: 0.008, ease: "power2.out" }, 
+                                ">+0.1"
+                            );
+                        } else {
+                            gsap.killTweensOf(statement);
+                            tl.fromTo(statement, 
+                                { y: 30, opacity: 0 }, 
+                                { y: 0, opacity: 1, duration: 0.5, ease: "power2.out" }, 
+                                ">+0.1"
+                            );
+                        }
+                    }
+
+                    if (credentials) {
+                        gsap.killTweensOf(credentials);
+                        tl.fromTo(credentials, 
+                            { y: 20, opacity: 0 }, 
+                            { y: 0, opacity: 1, duration: 0.4, ease: "power2.out" }, 
+                            ">+0.1"
+                        );
+                    }
+
+                    if (certTitle) {
+                        gsap.killTweensOf(certTitle);
+                        tl.fromTo(certTitle, 
+                            { y: 20, opacity: 0 }, 
+                            { y: 0, opacity: 1, duration: 0.4, ease: "power2.out" }, 
+                            ">+0.1"
+                        );
+                    }
+
+                    if (gridWrapper) {
+                        gsap.killTweensOf(gridWrapper);
+                        tl.fromTo(gridWrapper, 
+                            { y: 20, opacity: 0 }, 
+                            { y: 0, opacity: 1, duration: 0.5, ease: "power2.out" }, 
+                            ">+0.1"
+                        );
+                    }
+                    return;
+                }
+
+                const reveals = section.querySelectorAll(".gsap-reveal");
+                reveals.forEach((reveal, idx) => {
+                    const chars = reveal.querySelectorAll(".split-char");
+                    const delay = idx * 0.15;
+
+                    if (chars.length > 0) {
+                        gsap.killTweensOf(chars);
+                        gsap.fromTo(chars,
+                            { y: 20, opacity: 0 },
+                            {
+                                y: 0,
+                                opacity: 1,
+                                duration: 0.6,
+                                stagger: 0.015,
+                                ease: "power2.out",
+                                delay: delay,
+                                overwrite: "auto"
+                            }
+                        );
+                    } else {
+                        gsap.killTweensOf(reveal);
+                        gsap.fromTo(reveal,
+                            { y: 30, opacity: 0 },
+                            {
+                                y: 0,
+                                opacity: 1,
+                                duration: 0.5,
+                                ease: "power2.out",
+                                delay: delay,
+                                overwrite: "auto"
+                            }
+                        );
+                    }
+                });
+            };
+
+            const handleUpdateIndex = (newIndex: number) => {
+                if (newIndex === lastIndex) return;
+
+                // Reset reveals of the section we are leaving (except Hero)
+                if (lastIndex !== -1 && lastIndex !== 0) {
+                    const prevSection = sections[lastIndex];
+                    if (prevSection) {
+                        const reveals = prevSection.querySelectorAll(".gsap-reveal");
+                        reveals.forEach((reveal) => {
+                            const chars = reveal.querySelectorAll(".split-char");
+                            if (chars.length > 0) {
+                                gsap.killTweensOf(chars);
+                                gsap.set(chars, { y: 20, opacity: 0 });
+                            } else {
+                                gsap.killTweensOf(reveal);
+                                gsap.set(reveal, { y: 30, opacity: 0 });
+                            }
+                        });
+                    }
+                }
+
+                lastIndex = newIndex;
+                currentActiveIndex = newIndex;
+                window.dispatchEvent(new CustomEvent("sectionChange", { detail: { activeIndex: newIndex } }));
+
+                playSectionReveals(newIndex);
+            };
+
+            // Hide initially all other reveals
+            sections.forEach((section, index) => {
+                if (index > 0) {
+                    const reveals = section.querySelectorAll(".gsap-reveal");
+                    reveals.forEach((reveal) => {
+                        const chars = reveal.querySelectorAll(".split-char");
+                        if (chars.length > 0) {
+                            gsap.set(chars, { y: 20, opacity: 0 });
+                        } else {
+                            gsap.set(reveal, { y: 30, opacity: 0 });
+                        }
+                    });
+                }
+            });
+
             // 2. Timeline Core - 1:1 Direct Control
             const mainTimeline = gsap.timeline({
                 scrollTrigger: {
@@ -54,10 +249,7 @@ export default function HorizontalScroller({ children }: Props) {
                     onUpdate: (self) => {
                         // Force ActiveIndex 0 and Brightness at exactly 0 progress
                         if (self.progress === 0) {
-                            if (currentActiveIndex !== 0) {
-                                currentActiveIndex = 0;
-                                window.dispatchEvent(new CustomEvent("sectionChange", { detail: { activeIndex: 0 } }));
-                            }
+                            handleUpdateIndex(0);
                             gsap.set(sections[0], { opacity: 1, filter: "brightness(1)" });
                             return;
                         }
@@ -74,10 +266,7 @@ export default function HorizontalScroller({ children }: Props) {
                             }
                         });
 
-                        if (newIndex !== currentActiveIndex) {
-                            currentActiveIndex = newIndex;
-                            window.dispatchEvent(new CustomEvent("sectionChange", { detail: { activeIndex: newIndex } }));
-                        }
+                        handleUpdateIndex(newIndex);
                     }
                 }
             });
@@ -133,9 +322,8 @@ export default function HorizontalScroller({ children }: Props) {
                 // --- C. VERTICAL CONTENT PAUSE ---
                 // Vertical content must happen AFTER the index trigger for THAT section
                 if (isVerticalTransition && inner) {
-                    const innerDist = inner.scrollHeight - window.innerHeight;
                     mainTimeline.to(inner, {
-                        y: -innerDist,
+                        y: () => -(inner.scrollHeight - window.innerHeight),
                         duration: 2,
                         ease: "none"
                     });
@@ -143,25 +331,14 @@ export default function HorizontalScroller({ children }: Props) {
                     mainTimeline.addLabel(`${arrivalLabel}-vertical-end`);
                 }
 
-                // --- D. REVEALS ---
-                const reveals = section.querySelectorAll(".gsap-reveal");
-                if (reveals.length) {
-                    const isAbout = section.classList.contains("about-panel");
-                    mainTimeline.fromTo(reveals, 
-                        { y: 50, opacity: 0 },
-                        { 
-                            y: 0, 
-                            opacity: 1, 
-                            duration: 0.4, 
-                            stagger: isAbout ? 0 : 0.1, 
-                            ease: "power2.out" 
-                        },
-                        isAbout ? `${arrivalLabel}-=0.2` : arrivalLabel // About reveals slightly earlier
-                    );
-                }
+
             });
 
             requestAnimationFrame(() => ScrollTrigger.refresh());
+
+            return () => {
+                resizeObserver.disconnect();
+            };
 
         }, containerRef);
 

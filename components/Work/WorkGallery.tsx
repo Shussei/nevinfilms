@@ -1,10 +1,10 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { createPortal } from "react-dom";
 import "@/styles/work.css";
-import { useIsDesktop } from "@/hooks/useIsDesktop";
+import CircularGallery from "./CircularGallery";
 
 const PDFViewer = dynamic(() => import("./PDFViewer"), { ssr: false });
 
@@ -81,38 +81,19 @@ const WORKS = [
         category: "Architectural",
         roles: ["Cinematography"],
         desc: "A rhythmic journey through light and movement, showcasing innovative camera pacing."
-    },
-    {
-        id: "9",
-        title: "PITCH DECK: VI",
-        category: "Pitch",
-        roles: ["Director", "Creative Lead"],
-        desc: "A comprehensive project deck for 'VI', detailing the visual language, world-building, and artistic vision for the project.",
-        pdfUrl: "/pitches/PITCH DECK for VI.pdf",
-        customThumbnail: "https://images.unsplash.com/photo-1544911845-1f34a3eb46b1?q=80&w=2070&auto=format&fit=crop"
-    },
-    {
-        id: "10",
-        title: "PITCH DECK",
-        category: "Pitch",
-        roles: ["Creative Producer"],
-        desc: "Visual development deck focusing on character storyboards and stylistic narrative progression.",
-        pdfUrl: "/pitches/pitch-deck.pdf",
-        customThumbnail: "https://images.unsplash.com/photo-1512446816042-444d641267d4?q=80&w=2070&auto=format&fit=crop"
     }
 ];
 
 export default function WorkGallery() {
     const [selectedWork, setSelectedWork] = useState<any | null>(null);
-    const [hoveredWork, setHoveredWork] = useState<string | null>(null);
+    const [centerIndex, setCenterIndex] = useState<number>(0);
+    const [isCentered, setIsCentered] = useState<boolean>(false);
     const [mounted, setMounted] = useState(false);
-    const isDesktop = useIsDesktop();
 
     useEffect(() => {
         setMounted(true);
     }, []);
 
-    // ─── BODY SCROLL LOCK ───
     useEffect(() => {
         if (selectedWork) {
             document.body.classList.add("modal-open");
@@ -122,113 +103,100 @@ export default function WorkGallery() {
         return () => document.body.classList.remove("modal-open");
     }, [selectedWork]);
 
+    const galleryItems = useMemo(() => WORKS.map(work => ({
+        image: work.customThumbnail || `https://img.youtube.com/vi/${work.youtubeId}/maxresdefault.jpg`,
+        text: work.title
+    })), []);
+
+    const handleCenterChange = useCallback((index: number, centered: boolean) => {
+        setCenterIndex(index);
+        setIsCentered(centered);
+    }, []);
+
+    const handleCenterClick = useCallback((index: number) => {
+        if (WORKS[index]) {
+            setSelectedWork(WORKS[index]);
+        }
+    }, []);
+
+    const activeWork = WORKS[centerIndex];
+
     return (
         <section className="panel-section work-panel">
             <div className="work-header">
                 <h2 className="gsap-reveal mobile-reveal">Selected Works</h2>
             </div>
 
-            <div className="section-divider"></div>
-            <div className="work-grid">
-                {WORKS.map((work, index) => (
-                    <div
-                        key={work.id}
-                        className={`work-grid-item gsap-reveal mobile-reveal mobile-reveal-image parallax-lite delay-${(index % 3) + 1}`}
-                        onClick={() => setSelectedWork(work)}
-                        onMouseEnter={() => isDesktop && setHoveredWork(work.id)}
-                        onMouseLeave={() => isDesktop && setHoveredWork(null)}
-                    >
-                        <img
-                            src={work.customThumbnail || `https://img.youtube.com/vi/${work.youtubeId}/maxresdefault.jpg`}
-                            alt={work.title}
-                            className="work-hover-image"
-                            loading="lazy"
-                            onError={(e) => {
-                                const target = e.target as HTMLImageElement;
-                                if (!work.customThumbnail && work.youtubeId && !target.src.includes("hqdefault")) {
-                                    target.src = `https://img.youtube.com/vi/${work.youtubeId}/hqdefault.jpg`;
-                                }
-                            }}
-                        />
+            {/* Circular Gallery Canvas */}
+            <div className="work-gallery-canvas-wrapper">
+                {/* Overlays for active center item inside the canvas relative wrapper */}
+                <div className={`work-center-overlay work-role-overlay ${isCentered && activeWork ? "is-active" : ""}`}>
+                    <span className="work-role-text">
+                        {activeWork ? activeWork.roles.join(" & ") : ""}
+                    </span>
+                </div>
 
-                        {isDesktop && work.youtubeId && (
-                            <>
-                                <iframe
-                                    className={`work-hover-iframe${hoveredWork === work.id ? " is-visible" : ""}`}
-                                    src={
-                                        hoveredWork === work.id
-                                            ? `https://www.youtube.com/embed/${work.youtubeId}?autoplay=1&mute=1&controls=0&loop=1&playlist=${work.youtubeId}&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3`
-                                            : "about:blank"
-                                    }
-                                    allow="autoplay"
-                                    title={work.title}
-                                    tabIndex={-1}
-                                />
-                                <div className="work-preview-label">Play Preview</div>
-                            </>
-                        )}
+                <CircularGallery
+                    items={galleryItems}
+                    bend={1.2}
+                    textColor="#ffffff"
+                    borderRadius={0.05}
+                    scrollEase={0.06}
+                    font="bold 30px Figtree"
+                    scrollSpeed={2.2}
+                    onCenterItemChange={handleCenterChange}
+                    onCenterItemClick={handleCenterClick}
+                />
 
-                        <div className="work-item-overlay">
-                            <h3 className="work-item-title text-focus">{work.title}</h3>
-                            <p className="work-item-category text-focus">{work.category}</p>
-                        </div>
-                    </div>
-                ))}
+                <div className={`work-center-overlay work-title-overlay ${isCentered && activeWork ? "is-active" : ""}`}>
+                    <h3 className="work-title-text">
+                        {activeWork ? activeWork.title : ""}
+                    </h3>
+                </div>
             </div>
 
-            {selectedWork &&
-                mounted &&
-                createPortal(
+            {/* Cinematic Modal Overlay */}
+            {selectedWork && mounted && createPortal(
+                <div
+                    className="work-modal-overlay"
+                    onClick={() => setSelectedWork(null)}
+                    onWheel={(e) => e.stopPropagation()}
+                >
                     <div
-                        className="work-modal-overlay"
-                        onClick={() => setSelectedWork(null)}
-                        onWheel={(e) => e.stopPropagation()}
+                        className={`work-modal-content${selectedWork ? " is-open" : ""}`}
+                        onClick={(e) => e.stopPropagation()}
                     >
-                        <div
-                            className={`work-modal-content${selectedWork ? " is-open" : ""}`}
-                            onClick={(e) => e.stopPropagation()}
+                        <button
+                            className="work-modal-close"
+                            onClick={() => setSelectedWork(null)}
                         >
-                            <button
-                                className="work-modal-close"
-                                onClick={() => setSelectedWork(null)}
-                            >
-                                ✕ CLOSE
-                            </button>
+                            ✕ CLOSE
+                        </button>
 
-                            {selectedWork.pdfUrl ? (
-                                <div 
-                                    className="work-modal-pdf"
-                                    onContextMenu={(e) => e.preventDefault()}
-                                    onWheel={(e) => e.stopPropagation()}
-                                >
-                                    <PDFViewer file={selectedWork.pdfUrl} />
-                                </div>
-                            ) : (
-                                <div className="work-modal-video">
-                                    <iframe
-                                        src={`https://www.youtube.com/embed/${selectedWork.youtubeId}?autoplay=1&controls=1&rel=0`}
-                                        title={selectedWork.title}
-                                        allow="autoplay; encrypted-media"
-                                        allowFullScreen
-                                        className="work-modal-iframe"
-                                    />
-                                </div>
-                            )}
-
-                            <div className="work-modal-details">
-                                <h2 className="work-modal-role">{selectedWork.roles.join(" & ")}</h2>
-                                <h3 className="work-modal-type">{selectedWork.title} — {selectedWork.category}</h3>
-                                
-                                <div className="work-modal-divider"></div>
-
-                                <p className="work-modal-desc">
-                                    {selectedWork.desc}
-                                </p>
-                            </div>
+                        <div className="work-modal-video">
+                            <iframe
+                                src={`https://www.youtube.com/embed/${selectedWork.youtubeId}?autoplay=1&controls=1&rel=0`}
+                                title={selectedWork.title}
+                                allow="autoplay; encrypted-media"
+                                allowFullScreen
+                                className="work-modal-iframe"
+                            />
                         </div>
-                    </div>,
-                    document.body
-                )}
+
+                        <div className="work-modal-details">
+                            <h2 className="work-modal-role">{selectedWork.roles.join(" & ")}</h2>
+                            <h3 className="work-modal-type">{selectedWork.title} — {selectedWork.category}</h3>
+                            
+                            <div className="work-modal-divider"></div>
+
+                            <p className="work-modal-desc">
+                                {selectedWork.desc}
+                            </p>
+                        </div>
+                    </div>
+                </div>,
+                document.body
+            )}
         </section>
     );
 }

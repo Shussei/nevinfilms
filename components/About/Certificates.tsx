@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
-import gsap from "gsap";
+import ChromaGrid from "@/components/ChromaGrid";
 import "@/styles/certificates.css";
 
 const CERTIFICATES = [
@@ -56,28 +56,36 @@ export default function Certificates() {
         setMounted(true);
     }, []);
 
+    const chromaItems = CERTIFICATES.map(cert => ({
+        image: cert.image,
+        title: cert.title,
+        subtitle: cert.issuer,
+        handle: cert.year,
+        borderColor: "#5227FF",
+        gradient: "linear-gradient(145deg, #181124, #050505)"
+    }));
+
+    const handleItemClick = (item: any) => {
+        const found = CERTIFICATES.find(c => c.image === item.image);
+        if (found) {
+            setSelectedCert(found);
+        }
+    };
+
     return (
         <div className="certificates-section">
             <h2 className="certificates-title gsap-reveal mobile-reveal">Certifications & Honors</h2>
-            <div className="certificates-grid">
-                {CERTIFICATES.map((cert) => (
-                    <div
-                        key={cert.id}
-                        className="certificate-card gsap-reveal mobile-reveal"
-                        onClick={() => setSelectedCert(cert)}
-                    >
-                        <div className="certificate-image-container">
-                            <img src={cert.image} alt={cert.title} className="certificate-image" />
-                            <div className="certificate-hover-overlay">
-                                <span>SELECT TO VIEW</span>
-                            </div>
-                        </div>
-                        <div className="certificate-info">
-                            <h3 className="certificate-name">{cert.title}</h3>
-                            <p className="certificate-meta">{cert.issuer} • {cert.year}</p>
-                        </div>
-                    </div>
-                ))}
+            
+            <div className="chromagrid-wrapper gsap-reveal mobile-reveal">
+                <ChromaGrid
+                    items={chromaItems}
+                    radius={220}
+                    damping={0.45}
+                    fadeOut={0.6}
+                    columns={3}
+                    rows={2}
+                    onItemClick={handleItemClick}
+                />
             </div>
 
             {/* Certificate Modal */}

@@ -14,30 +14,26 @@ if (typeof window !== "undefined") {
 export default function NavBar() {
     const [activeIndex, setActiveIndex] = useState(0);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [scrollProgress, setScrollProgress] = useState(0);
     const isDesktop = useIsDesktop();
 
     useEffect(() => {
-        const handleScroll = () => {
-            const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
-            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            const scrolled = (winScroll / height) * 100;
-            setScrollProgress(scrolled);
-        };
-
-        window.addEventListener("scroll", handleScroll);
-        // Initial check
-        handleScroll();
-
         const handleSectionChange = (e: any) => {
             const index = e.detail.activeIndex;
-            const validIndex = Math.max(0, Math.min(index, 4));
-            setActiveIndex(validIndex);
+            // Map panel index to navbar item index:
+            // 0 -> 0 (Home), 1 -> 1 (About), 2 -> 2 (Skills)
+            // 3 -> 3 (Work), 4 -> 3 (Work, Pitch Deck extension)
+            // 5 -> 4 (Contact)
+            let navIndex = index;
+            if (index === 4) {
+                navIndex = 3;
+            } else if (index === 5) {
+                navIndex = 4;
+            }
+            setActiveIndex(Math.max(0, Math.min(navIndex, 4)));
         };
         window.addEventListener("sectionChange", handleSectionChange);
         
         return () => {
-            window.removeEventListener("scroll", handleScroll);
             window.removeEventListener("sectionChange", handleSectionChange);
         };
     }, []);
@@ -68,7 +64,13 @@ export default function NavBar() {
         if (isDesktop) {
             const st = ScrollTrigger.getById("main-scroller");
             if (st) {
-                const targetScroll = st.labelToScroll(`section-${index}`);
+                // Map navbar click index to scroller panel index:
+                // 0 -> 0, 1 -> 1, 2 -> 2, 3 -> 3 (Work), 4 -> 5 (Contact, skipping Pitch Deck)
+                let sectionIndex = index;
+                if (index === 4) {
+                    sectionIndex = 5;
+                }
+                const targetScroll = st.labelToScroll(`section-${sectionIndex}`);
                 // Use Lenis if available for smoother transition that doesn't fight the scroller
                 const lenis = (window as any).lenis;
                 if (lenis) {
@@ -79,7 +81,13 @@ export default function NavBar() {
             }
         } else {
             const sections = document.querySelectorAll(".panel-section");
-            const target = sections[index];
+            // Mobile sections layout mapping:
+            // Home (0), About (1), Skills (2), Work (3), Pitch Deck (4), Contact (5)
+            let sectionIndex = index;
+            if (index === 4) {
+                sectionIndex = 5;
+            }
+            const target = sections[sectionIndex];
             if (target) {
                 target.scrollIntoView({ behavior: "smooth" });
             }
@@ -88,13 +96,6 @@ export default function NavBar() {
 
     return (
         <nav className="cinematic-nav">
-            {/* Scroll Progress Bar (Top) */}
-            <div className="scroll-progress-container">
-                <div 
-                    className="scroll-progress-bar" 
-                    style={{ transform: `scaleX(${scrollProgress / 100})` }}
-                />
-            </div>
 
             <ul className="cinematic-nav__list">
                 {navItems.map((item, index) => (

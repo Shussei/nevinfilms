@@ -2,8 +2,11 @@
 
 import { useEffect, useState, useRef } from "react";
 import "@/styles/backgrounds.css";
+import LightRays from "./LightRays";
+import DotGrid from "./DotGrid";
 
-type SectionType = "home" | "about" | "skills" | "work" | "contact";
+type SectionType = "home" | "about" | "skills" | "work" | "pitchdeck" | "contact";
+
 
 export default function GlobalBackgroundController() {
     const [activeSection, setActiveSection] = useState<SectionType>("home");
@@ -16,7 +19,7 @@ export default function GlobalBackgroundController() {
         const handleSectionChange = (e: any) => {
             if (isMobile) return;
             const index = e.detail.activeIndex;
-            const sections: SectionType[] = ["home", "about", "skills", "work", "contact"];
+            const sections: SectionType[] = ["home", "about", "skills", "work", "pitchdeck", "contact"];
             if (sections[index]) {
                 setActiveSection(sections[index]);
             }
@@ -40,6 +43,7 @@ export default function GlobalBackgroundController() {
                         else if (target.classList.contains("about-panel")) setActiveSection("about");
                         else if (target.classList.contains("skills-panel")) setActiveSection("skills");
                         else if (target.classList.contains("work-panel")) setActiveSection("work");
+                        else if (target.classList.contains("pitch-deck-panel")) setActiveSection("pitchdeck");
                         else if (target.classList.contains("contact-panel")) setActiveSection("contact");
                     }
                 });
@@ -56,22 +60,46 @@ export default function GlobalBackgroundController() {
         };
     }, []);
 
+    const showRays = activeSection === "about" || activeSection === "skills" || activeSection === "work" || activeSection === "pitchdeck";
+
     return (
         <div className="global-bg" data-active-section={activeSection}>
             {/* LAYER: HOME (Clean Black - Base) */}
             <div className={`bg-layer bg-home ${activeSection === "home" ? "active" : ""}`} />
 
-            {/* LAYER: ABOUT (Soft Gradient) */}
-            <div className={`bg-layer bg-about ${activeSection === "about" ? "active" : ""}`} />
+            {/* SHARED WebGL LIGHT RAYS (For About, Skills, Work sections) */}
+            <div className={`bg-layer bg-rays-shared ${showRays ? "active" : ""}`}>
+                {showRays && (
+                    <LightRays
+                        raysOrigin="top-center"
+                        raysColor="#ffffff"
+                        raysSpeed={1.0}
+                        lightSpread={0.5}
+                        rayLength={3.0}
+                        followMouse={true}
+                        mouseInfluence={0.1}
+                        noiseAmount={0.0}
+                        distortion={0.0}
+                        pulsating={false}
+                        fadeDistance={1.0}
+                        saturation={1.0}
+                    />
+                )}
+            </div>
 
-            {/* LAYER: SKILLS (Pattern/Grid) */}
-            <div className={`bg-layer bg-skills ${activeSection === "skills" ? "active" : ""}`} />
-
-            {/* LAYER: WORK (Grain + Vignette) */}
-            <div className={`bg-layer bg-work ${activeSection === "work" ? "active" : ""}`} />
-
-            {/* LAYER: CONTACT (Clean Black) */}
-            <div className={`bg-layer bg-contact ${activeSection === "contact" ? "active" : ""}`} />
+            {/* LAYER: CONTACT (DotGrid Background) */}
+            <div className={`bg-layer bg-contact ${activeSection === "contact" ? "active" : ""}`}>
+                {activeSection === "contact" && (
+                    <DotGrid
+                        dotSize={3}
+                        gap={18}
+                        baseColor="#1f182c"
+                        activeColor="#5227FF"
+                        proximity={120}
+                        shockStrength={3}
+                    />
+                )}
+            </div>
             
             {/* VIGNETTE OVERLAY (Always Present for Cinematic Feel) */}
             <div className="cinematic-overlay" />

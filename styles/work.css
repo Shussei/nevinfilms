@@ -1,18 +1,21 @@
-/* ─── Work Section (Mobile-First) ─── */
 .work-panel {
   display: flex;
   flex-direction: column;
-  padding: var(--section-padding);
+  padding: 8vh 5vw 4vh;
   width: 100%;
-  min-height: 100dvh;
+  height: 100dvh;
   position: relative;
   background-color: transparent;
+  box-sizing: border-box;
+  overflow: hidden;
+  justify-content: center;
 }
 
 .work-header {
   width: 100%;
-  margin-bottom: 2rem;
+  margin-bottom: 0.5rem;
   text-align: center;
+  flex-shrink: 0;
 }
 
 .work-header h2 {
@@ -350,10 +353,10 @@ body.modal-open {
   }
 
   .work-grid {
-    grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(2, 1fr);
-    gap: 3rem;
-    height: 65vh;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 2.5rem;
+    height: 68vh;
   }
 
   .work-grid-item:hover {
@@ -459,5 +462,81 @@ body.modal-open {
   .work-grid-item:hover .work-preview-label {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+/* Circular Gallery Custom Overlay Labels */
+.work-gallery-canvas-wrapper {
+  width: 100%;
+  height: 62vh;
+  position: relative;
+  overflow: visible;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.work-center-overlay {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  z-index: 100;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  width: 100%;
+  max-width: 600px;
+}
+
+.work-center-overlay.work-role-overlay {
+  top: 40px;
+  transform: translate(-50%, 10px);
+}
+
+.work-center-overlay.work-title-overlay {
+  bottom: 30px;
+  transform: translate(-50%, -10px);
+}
+
+.work-center-overlay.is-active {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.work-center-overlay .work-role-text {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  letter-spacing: 0.4em;
+  color: #ffffff;
+  opacity: 0.75;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.work-center-overlay .work-title-text {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 4.5vw, 2.8rem);
+  letter-spacing: 0.08em;
+  color: #fff;
+  text-transform: uppercase;
+  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.9);
+  line-height: 1.2;
+}
+
+@media (max-width: 767px) {
+  .work-panel {
+    height: auto !important;
+    padding: 60px 20px !important;
+    overflow: visible !important;
+  }
+  .work-gallery-canvas-wrapper {
+    height: 50vh !important;
+  }
+  .work-center-overlay.work-role-overlay {
+    top: -2vh;
+  }
+  .work-center-overlay.work-title-overlay {
+    bottom: -2vh;
   }
 }

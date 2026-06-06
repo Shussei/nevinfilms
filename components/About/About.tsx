@@ -4,6 +4,8 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import Certificates from "./Certificates";
 import "@/styles/about.css";
+import SplitText from "@/components/SplitText";
+import GradientText from "@/components/GradientText";
 
 export default function About() {
     const containerRef = useRef<HTMLDivElement>(null);
@@ -22,14 +24,24 @@ export default function About() {
                     </div>
 
                     <div className="about-content">
-                        <h1 className="about-name gsap-reveal mobile-reveal delay-1 text-focus">NEVIN J MADEKKAL</h1>
-                        <p className="about-role gsap-reveal mobile-reveal delay-2 text-focus">FILMMAKER & MEDIA PROFESSIONAL</p>
+                        <SplitText
+                            text="NEVIN J MADEKKAL"
+                            className="about-name gsap-reveal mobile-reveal delay-1 text-focus"
+                            tag="h1"
+                        />
+                        <GradientText
+                            colors={["#C4B5FD", "#8B7CF6", "#E2D9F3"]}
+                            animationSpeed={10}
+                            className="about-role gsap-reveal mobile-reveal delay-2 text-focus"
+                        >
+                            FILMMAKER & MEDIA PROFESSIONAL
+                        </GradientText>
 
-                        <p className="about-statement gsap-reveal mobile-reveal delay-3 text-focus">
-                            Dynamic filmmaker and media professional with extensive experience in directing,
-                            cinematography, and production. Proven track record in managing film festivals
-                            and creating compelling visual content across multiple formats.
-                        </p>
+                        <SplitText
+                            text="Dynamic filmmaker and media professional with extensive experience in directing, cinematography, and production. Proven track record in managing film festivals and creating compelling visual content across multiple formats."
+                            className="about-statement gsap-reveal mobile-reveal delay-3 text-focus"
+                            tag="p"
+                        />
 
                         <div className="about-background gsap-reveal mobile-reveal delay-4">
                             <span className="about-credential">M.A. Cinema & Television — SH College Thevera (2021–2023)</span>

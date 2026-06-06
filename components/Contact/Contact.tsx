@@ -1,6 +1,13 @@
+"use client";
+
+import React, { useState, useEffect, useRef } from "react";
+import EncryptedText from "@/components/ui/EncryptedText";
 import "@/styles/contact.css";
 
 export default function Contact() {
+    const containerRef = useRef<HTMLDivElement>(null);
+    const [activeDecryptIndex, setActiveDecryptIndex] = useState(-1);
+
     const items = [
         {
             label: "Phone",
@@ -49,8 +56,70 @@ export default function Contact() {
         }
     ];
 
+    const timeoutsRef = useRef<NodeJS.Timeout[]>([]);
+
+    const startDecryptionSequence = () => {
+        // Clear any active timeouts to prevent overlaps
+        timeoutsRef.current.forEach(clearTimeout);
+        
+        setActiveDecryptIndex(0);
+        
+        const t1 = setTimeout(() => setActiveDecryptIndex(1), 500);
+        const t2 = setTimeout(() => setActiveDecryptIndex(2), 1300);
+        const t3 = setTimeout(() => setActiveDecryptIndex(3), 1900);
+        const t4 = setTimeout(() => setActiveDecryptIndex(4), 2400);
+
+        timeoutsRef.current = [t1, t2, t3, t4];
+    };
+
+    const resetDecryptionSequence = () => {
+        timeoutsRef.current.forEach(clearTimeout);
+        timeoutsRef.current = [];
+        setActiveDecryptIndex(-1);
+    };
+
+    useEffect(() => {
+        const isMobile = window.innerWidth < 768;
+
+        if (isMobile) {
+            const observer = new IntersectionObserver(
+                ([entry]) => {
+                    if (entry.isIntersecting) {
+                        startDecryptionSequence();
+                    } else {
+                        resetDecryptionSequence();
+                    }
+                },
+                { threshold: 0.1 }
+            );
+
+            if (containerRef.current) {
+                observer.observe(containerRef.current);
+            }
+            return () => {
+                observer.disconnect();
+                timeoutsRef.current.forEach(clearTimeout);
+            };
+        } else {
+            // Desktop horizontal scrolling
+            const handleSection = (e: any) => {
+                if (e.detail.activeIndex !== 5) {
+                    resetDecryptionSequence();
+                } else {
+                    startDecryptionSequence();
+                }
+            };
+
+            window.addEventListener("sectionChange", handleSection);
+            return () => {
+                window.removeEventListener("sectionChange", handleSection);
+                timeoutsRef.current.forEach(clearTimeout);
+            };
+        }
+    }, []);
+
     return (
-        <div className="contact-inner">
+        <div ref={containerRef} className="contact-inner">
             {/* Display heading */}
             <div className="contact-heading-wrap gsap-reveal mobile-reveal">
                 <p className="contact-eyebrow">Get in touch</p>
@@ -59,7 +128,7 @@ export default function Contact() {
 
             {/* Contact rows */}
             <div className="contact-rows gsap-reveal mobile-reveal delay-1">
-                {items.map((item) => (
+                {items.map((item, index) => (
                     <a
                         key={item.label}
                         href={item.href}
@@ -69,7 +138,17 @@ export default function Contact() {
                     >
                         <span className="contact-row-icon">{item.icon}</span>
                         <span className="contact-row-label">{item.label}</span>
-                        <span className="contact-row-value">{item.value}</span>
+                        
+                        <span className="contact-row-value">
+                            <EncryptedText
+                                text={item.value}
+                                trigger={activeDecryptIndex >= index}
+                                revealDelayMs={30}
+                                revealedClassName="contact-value-revealed"
+                                encryptedClassName="contact-value-encrypted"
+                            />
+                        </span>
+                        
                         <span className="contact-row-arrow">→</span>
                     </a>
                 ))}

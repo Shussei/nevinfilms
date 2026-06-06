@@ -3,16 +3,28 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 3rem;
+  gap: 2rem;
   padding: var(--section-padding);
   width: 100%;
-  min-height: 100dvh;
+  height: 100dvh;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.contact-value-revealed {
+  color: #fff;
+  transition: color 0.3s ease;
+}
+
+.contact-value-encrypted {
+  color: #5227FF;
+  opacity: 0.55;
 }
 
 .contact-heading-wrap {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.25rem;
 }
 
 .contact-eyebrow {
@@ -146,3 +158,12 @@
     color: var(--color-accent);
   }
 }
+
+@media (max-width: 767px) {
+  .contact-inner {
+     height: auto !important;
+     padding: 60px 20px !important;
+     overflow: visible !important;
+  }
+}
+
