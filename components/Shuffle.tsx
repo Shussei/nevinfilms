@@ -402,20 +402,52 @@ const Shuffle: React.FC<ShuffleProps> = ({
   const classes = useMemo(() => `shuffle-parent ${ready ? 'is-ready' : ''} ${className}`, [ready, className]);
   const Tag = tag;
 
+  const words = text.split(' ');
+  let globalCharIndex = 0;
+
   return React.createElement(
     Tag,
     { ref, className: classes, style: commonStyle },
-    text.split('').map((char, i) =>
-      React.createElement(
+    words.map((word, wordIdx) => {
+      const wordChars = word.split('').map((char) => {
+        const charEl = React.createElement(
+          'span',
+          {
+            key: globalCharIndex,
+            className: 'shuffle-char',
+            style: { display: 'inline-block' }
+          },
+          char
+        );
+        globalCharIndex++;
+        return charEl;
+      });
+
+      const showSpace = wordIdx < words.length - 1;
+      let spaceEl = null;
+      if (showSpace) {
+        spaceEl = React.createElement(
+          'span',
+          {
+            key: `space-${wordIdx}`,
+            className: 'shuffle-char',
+            style: { display: 'inline-block' }
+          },
+          '\u00A0'
+        );
+        globalCharIndex++;
+      }
+
+      return React.createElement(
         'span',
         {
-          key: i,
-          className: 'shuffle-char',
-          style: { display: 'inline-block' }
+          key: `word-${wordIdx}`,
+          style: { display: 'inline-block', whiteSpace: 'nowrap' }
         },
-        char === ' ' ? '\u00A0' : char
-      )
-    )
+        ...wordChars,
+        spaceEl
+      );
+    })
   );
 };
 
