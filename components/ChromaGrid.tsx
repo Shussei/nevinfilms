@@ -129,6 +129,7 @@ export const ChromaGrid: React.FC<ChromaGridProps> = ({
   };
 
   const handleMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (e.pointerType !== 'mouse') return;
     const el = rootRef.current;
     if (!el) return;
     const r = el.getBoundingClientRect();
@@ -157,6 +158,7 @@ export const ChromaGrid: React.FC<ChromaGridProps> = ({
   };
 
   const handleCardMove = (e: React.MouseEvent<HTMLElement>) => {
+    if (window.matchMedia('(hover: none)').matches) return;
     const card = e.currentTarget;
     const rect = card.getBoundingClientRect();
     const x = e.clientX - rect.left;

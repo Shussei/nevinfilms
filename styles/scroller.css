@@ -166,6 +166,11 @@
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   }
 
+  .about-panel {
+    overflow: visible !important;
+    height: auto !important;
+  }
+
   /* Ensure Body is scrollable */
   body {
     overflow: auto !important;

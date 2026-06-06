@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
@@ -104,11 +104,21 @@ export default function Hero() {
 
         const onEnded = () => runTransition();
         const onError = () => runTransition();
-        const safetyTimer = setTimeout(() => runTransition(), 15000);
+
+        // Safety: if video is blocked (autoplay policy) but loaded, skip after 12s
+        const safetyTimer = setTimeout(() => runTransition(), 12000);
 
         video.addEventListener("ended", onEnded);
         video.addEventListener("error", onError);
-        video.play().catch(() => runTransition());
+
+        // Try autoplay; if browser blocks it, skip to hero immediately
+        const playPromise = video.play();
+        if (playPromise !== undefined) {
+            playPromise.catch(() => {
+                // Autoplay blocked — skip intro and show hero directly
+                runTransition();
+            });
+        }
 
         return () => {
             clearTimeout(safetyTimer);
@@ -127,10 +137,14 @@ export default function Hero() {
                     ref={videoRef}
                     className="hero-intro-video"
                     src="/intro.mp4"
+                    autoPlay
                     muted
                     playsInline
+                    /* @ts-ignore -- webkit-playsinline for older iOS Safari */
+                    webkit-playsinline="true"
                     preload="auto"
                     disablePictureInPicture
+                    x5-playsinline="true"
                 />
                 <div className="hero-intro-vignette" />
             </div>

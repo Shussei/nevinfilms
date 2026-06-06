@@ -22,16 +22,33 @@
 @media (max-width: 1124px) {
   .chroma-grid {
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1rem;
+    grid-template-rows: auto !important;
+    height: auto !important;
+    max-height: none !important;
+    gap: 1.5rem;
     padding: 0.5rem;
+  }
+  .chroma-card {
+    height: 220px !important;
+  }
+  /* Disable heavy/laggy backdrop filters and spotlights on touch screens */
+  .chroma-overlay,
+  .chroma-fade {
+    display: none !important;
   }
 }
 
 @media (max-width: 480px) {
   .chroma-grid {
     grid-template-columns: 1fr;
-    gap: 1rem;
+    grid-template-rows: auto !important;
+    height: auto !important;
+    max-height: none !important;
+    gap: 1.2rem;
     padding: 0.5rem;
+  }
+  .chroma-card {
+    height: 220px !important;
   }
 }
 
