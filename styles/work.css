@@ -534,7 +534,7 @@ body.modal-open {
     height: 50vh !important;
   }
   .work-center-overlay.work-role-overlay {
-    top: -2vh;
+    top: 6vh;
   }
   .work-center-overlay.work-title-overlay {
     bottom: -2vh;

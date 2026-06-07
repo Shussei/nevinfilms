@@ -111,11 +111,19 @@ export default function HorizontalScroller({ children }: Props) {
 
                     if (statement) {
                         const chars = statement.querySelectorAll(".split-char");
+                        const words = statement.querySelectorAll(".split-word");
                         if (chars.length > 0) {
                             gsap.killTweensOf(chars);
                             tl.fromTo(chars, 
                                 { y: 20, opacity: 0 }, 
-                                { y: 0, opacity: 1, duration: 0.7, stagger: 0.008, ease: "power2.out" }, 
+                                { y: 0, opacity: 1, duration: 0.5, stagger: 0.003, ease: "power2.out" }, 
+                                ">+0.1"
+                            );
+                        } else if (words.length > 0) {
+                            gsap.killTweensOf(words);
+                            tl.fromTo(words, 
+                                { y: 15, opacity: 0 }, 
+                                { y: 0, opacity: 1, duration: 0.5, stagger: 0.012, ease: "power2.out" }, 
                                 ">+0.1"
                             );
                         } else {
@@ -160,6 +168,7 @@ export default function HorizontalScroller({ children }: Props) {
                 const reveals = section.querySelectorAll(".gsap-reveal");
                 reveals.forEach((reveal, idx) => {
                     const chars = reveal.querySelectorAll(".split-char");
+                    const words = reveal.querySelectorAll(".split-word");
                     const delay = idx * 0.15;
 
                     if (chars.length > 0) {
@@ -171,6 +180,20 @@ export default function HorizontalScroller({ children }: Props) {
                                 opacity: 1,
                                 duration: 0.6,
                                 stagger: 0.015,
+                                ease: "power2.out",
+                                delay: delay,
+                                overwrite: "auto"
+                            }
+                        );
+                    } else if (words.length > 0) {
+                        gsap.killTweensOf(words);
+                        gsap.fromTo(words,
+                            { y: 15, opacity: 0 },
+                            {
+                                y: 0,
+                                opacity: 1,
+                                duration: 0.5,
+                                stagger: 0.03,
                                 ease: "power2.out",
                                 delay: delay,
                                 overwrite: "auto"
@@ -203,9 +226,13 @@ export default function HorizontalScroller({ children }: Props) {
                         const reveals = prevSection.querySelectorAll(".gsap-reveal");
                         reveals.forEach((reveal) => {
                             const chars = reveal.querySelectorAll(".split-char");
+                            const words = reveal.querySelectorAll(".split-word");
                             if (chars.length > 0) {
                                 gsap.killTweensOf(chars);
                                 gsap.set(chars, { y: 20, opacity: 0 });
+                            } else if (words.length > 0) {
+                                gsap.killTweensOf(words);
+                                gsap.set(words, { y: 15, opacity: 0 });
                             } else {
                                 gsap.killTweensOf(reveal);
                                 gsap.set(reveal, { y: 30, opacity: 0 });

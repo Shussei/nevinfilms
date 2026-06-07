@@ -70,7 +70,7 @@ const WORKS = [
         youtubeId: "Ieat2PHUPwg",
         title: "Krishna - Menon Associates",
         category: "Architectural",
-        roles: ["Cinematography"],
+        roles: ["Videography", "Editor"],
         desc: "A cinematic walkthrough of 'Krishna,' a residential haven in Aluva designed by Menon Associates, part of the Silpaayanam series.",
         customThumbnail: "/krishna-thumb.png"
     },
@@ -79,7 +79,7 @@ const WORKS = [
         youtubeId: "yq08mco-pA4",
         title: "Sreelakam - Menon Associates",
         category: "Architectural",
-        roles: ["Cinematography"],
+        roles: ["Videography", "Editor"],
         desc: "A rhythmic journey through light and movement, showcasing innovative camera pacing."
     }
 ];

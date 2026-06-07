@@ -13,8 +13,17 @@ if (typeof window !== "undefined") {
 
 export default function NavBar() {
     const [activeIndex, setActiveIndex] = useState(0);
+    const [isScrolled, setIsScrolled] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const isDesktop = useIsDesktop();
+
+    useEffect(() => {
+        const handleScroll = () => {
+            setIsScrolled(window.scrollY > 30);
+        };
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
 
     useEffect(() => {
         const handleSectionChange = (e: any) => {
@@ -41,25 +50,12 @@ export default function NavBar() {
     const navItems = ["Home", "About", "Skills", "Work", "Contact"];
 
     const toggleMenu = () => {
-        const nextState = !isMenuOpen;
-        setIsMenuOpen(nextState);
-        
-        // Lenis Scroll Lock
-        const lenis = (window as any).lenis;
-        if (lenis) {
-            if (nextState) {
-                lenis.stop();
-                document.body.classList.add("menu-open");
-            } else {
-                lenis.start();
-                document.body.classList.remove("menu-open");
-            }
-        }
+        setIsMenuOpen(!isMenuOpen);
     };
 
     const handleNavClick = (index: number) => {
         setActiveIndex(index); // Immediate UI update
-        if (isMenuOpen) toggleMenu();
+        if (isMenuOpen) setIsMenuOpen(false);
 
         if (isDesktop) {
             const st = ScrollTrigger.getById("main-scroller");
@@ -95,8 +91,9 @@ export default function NavBar() {
     };
 
     return (
-        <nav className="cinematic-nav">
-
+        <nav className={`cinematic-nav ${isScrolled ? "is-scrolled" : ""} ${isMenuOpen ? "menu-open" : ""}`}>
+            
+            {/* Desktop Navigation */}
             <ul className="cinematic-nav__list">
                 {navItems.map((item, index) => (
                     <li key={item}>
@@ -111,7 +108,7 @@ export default function NavBar() {
                 ))}
             </ul>
 
-            {/* Mobile Menu Toggle */}
+            {/* Mobile Menu Toggle (3-line button) */}
             <button 
               className={`nav-toggle ${isMenuOpen ? "is-active" : ""}`} 
               onClick={toggleMenu}
@@ -122,26 +119,21 @@ export default function NavBar() {
                 </div>
             </button>
 
-            {/* Overlay */}
-            <div className={`nav-overlay ${isMenuOpen ? "is-visible" : ""}`} onClick={toggleMenu} />
-
-            {/* Mobile Drawer - Using classes from navbar.css */}
+            {/* Mobile Drawer with horizontal layout */}
             <div className={`nav-drawer ${isMenuOpen ? "is-open" : ""}`}>
-                <div className="nav-drawer__list">
+                <ul className="nav-drawer__list">
                     {navItems.map((item, index) => (
-                        <button
-                            key={item}
-                            className={`nav-drawer__btn ${activeIndex === index ? "active" : ""}`}
-                            onClick={() => handleNavClick(index)}
-                        >
-                            <span className="drawer-btn-num">0{index + 1}</span>
-                            <span className="drawer-btn-text">{item}</span>
-                        </button>
+                        <li key={item}>
+                            <button
+                                className={`nav-drawer__btn ${activeIndex === index ? "active" : ""}`}
+                                onClick={() => handleNavClick(index)}
+                            >
+                                <span className="drawer-btn-num">0{index + 1}</span>
+                                <span className="drawer-btn-text">{item}</span>
+                            </button>
+                        </li>
                     ))}
-                    <div className="nav-drawer__footer">
-                        <p>© 2025 NEVIN JOSEPH</p>
-                    </div>
-                </div>
+                </ul>
             </div>
         </nav>
     );

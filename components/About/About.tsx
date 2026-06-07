@@ -41,6 +41,8 @@ export default function About() {
                             text="Dynamic filmmaker and media professional with extensive experience in directing, cinematography, and production. Proven track record in managing film festivals and creating compelling visual content across multiple formats."
                             className="about-statement gsap-reveal mobile-reveal delay-3 text-focus"
                             tag="p"
+                            delay={10}
+                            duration={0.6}
                         />
 
                         <div className="about-background gsap-reveal mobile-reveal delay-4">
