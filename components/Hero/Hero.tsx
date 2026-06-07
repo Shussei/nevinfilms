@@ -27,12 +27,13 @@ export default function Hero() {
         // Calculate responsive letters spreading based on viewport width
         const count = 11; // N E V I N _ J O S E P H
         const letterMid = (count - 1) / 2;
+        const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
         const spreadFactor = typeof window !== "undefined" ? Math.min(window.innerWidth * 0.03, 30) : 25;
 
         // Spread the letters outwards and blur them initially
         gsap.set(".hero-intro-letter", {
             opacity: 0,
-            filter: "blur(25px)",
+            filter: isMobile ? "none" : "blur(25px)",
             scale: 0.8,
             x: (i) => (i - letterMid) * spreadFactor
         });
@@ -60,7 +61,7 @@ export default function Hero() {
         // Aperture Focus Phase: Stagger letters focusing from center
         tl.to(".hero-intro-letter", {
             opacity: 1,
-            filter: "blur(0px)",
+            filter: isMobile ? "none" : "blur(0px)",
             scale: 1,
             x: 0,
             duration: 2.4,
@@ -123,7 +124,7 @@ export default function Hero() {
 
         // Simulate high-speed Motion Blur on the letters during zoom
         tl.to(".hero-intro-letter", {
-            filter: "blur(15px)",
+            filter: isMobile ? "none" : "blur(15px)",
             letterSpacing: "0.18em",
             duration: 1.0,
             ease: "power3.in"

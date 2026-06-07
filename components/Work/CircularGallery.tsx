@@ -593,8 +593,16 @@ class App {
     window.removeEventListener('touchmove', this.boundOnTouchMove);
     window.removeEventListener('touchend', this.boundOnTouchUp);
     
-    if (this.renderer && this.renderer.gl && this.renderer.gl.canvas.parentNode) {
-      this.renderer.gl.canvas.parentNode.removeChild(this.renderer.gl.canvas);
+    if (this.renderer && this.renderer.gl) {
+      const gl = this.renderer.gl;
+      if (gl.canvas && gl.canvas.parentNode) {
+        gl.canvas.parentNode.removeChild(gl.canvas);
+      }
+      // Explicitly lose the context to prevent WebGL context leaks on mobile
+      const loseContextExt = gl.getExtension('WEBGL_lose_context');
+      if (loseContextExt) {
+        loseContextExt.loseContext();
+      }
     }
   }
 }
@@ -628,6 +636,7 @@ export default function CircularGallery({
     if (!containerRef.current) return;
     let app: App;
     let isMounted = true;
+    let resizeObserver: ResizeObserver | null = null;
     
     resolveFont(font, fontUrl).then(resolvedFont => {
       if (!isMounted || !containerRef.current) return;
@@ -646,11 +655,20 @@ export default function CircularGallery({
           onCenterClickRef.current?.(index);
         }
       });
+
+      // Observe container resize to update WebGL canvas dimensions dynamically once size is available
+      if (typeof window !== "undefined" && window.ResizeObserver && containerRef.current) {
+        resizeObserver = new ResizeObserver(() => {
+          if (app) app.onResize();
+        });
+        resizeObserver.observe(containerRef.current);
+      }
     });
 
     return () => {
       isMounted = false;
       if (app) app.destroy();
+      if (resizeObserver) resizeObserver.disconnect();
     };
   }, [items, bend, textColor, borderRadius, font, fontUrl, scrollSpeed, scrollEase]);
 

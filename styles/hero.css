@@ -181,7 +181,6 @@
   50% { transform: translate(-3%, 1%); }
 }
 
-/* ─── Mobile Refinements (< 768px) ─── */
 @media (max-width: 767px) {
   .hero-main-title {
     font-size: 14vw;
@@ -195,7 +194,18 @@
 
   /* Responsive spacing refinements */
   .hero-intro-name-container {
-    padding: 0 1rem;
+    padding: 0 0.5rem;
+    white-space: nowrap !important;
+    flex-wrap: nowrap !important;
+  }
+
+  .hero-intro-letter {
+    font-size: clamp(1.2rem, 6.2vw, 3rem) !important;
+    filter: none !important; /* Disable expensive blur on mobile to fix rendering bugs */
+  }
+
+  .hero-intro-space {
+    width: clamp(0.4rem, 2vw, 1.2rem) !important;
   }
 }
 
