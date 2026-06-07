@@ -192,7 +192,28 @@ export default function Hero() {
                 });
         }, transitionStartTime + 2.0);
 
+        // Safety Fallback: Force reveal the home page if the timeline gets blocked, paused or killed
+        const safetyTimer = setTimeout(() => {
+            if (introOverlayRef.current && introOverlayRef.current.style.display !== "none") {
+                setIntroFinished(true);
+                gsap.to(introOverlayRef.current, {
+                    opacity: 0,
+                    duration: 0.8,
+                    ease: "power2.out",
+                    onComplete: () => {
+                        if (introOverlayRef.current) introOverlayRef.current.style.display = "none";
+                    }
+                });
+                // Force reveal page contents
+                gsap.to(".hero-background img", { opacity: 0.5, scale: 1, duration: 1.0 });
+                gsap.to(".hero-subtitle", { opacity: 1, y: 0, duration: 1.0 });
+                const nav = document.querySelector(".cinematic-nav");
+                if (nav) gsap.to(nav, { opacity: 1, y: 0, duration: 1.0 });
+            }
+        }, 6500);
+
         return () => {
+            clearTimeout(safetyTimer);
             tl.kill();
         };
     }, []);

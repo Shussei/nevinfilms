@@ -22,7 +22,6 @@ export default function HorizontalScroller({ children }: Props) {
         // ─── HARD DISABLE & CLEANUP FOR MOBILE ───
         if (isMobile) {
             ScrollTrigger.getAll().forEach(st => st.kill());
-            gsap.killTweensOf("*");
             return;
         }
 
