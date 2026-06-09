@@ -19,7 +19,7 @@ export default function About() {
                     {/* Glassmorphic image frame — gradient border via padding trick */}
                     <div className="about-image gsap-reveal mobile-reveal mobile-reveal-image parallax-lite">
                         <div className="about-image-inner">
-                            <img src="/IMG_4314.JPG.jpeg" alt="Nevin J Madekkal Portrait" />
+                            <img src="/nevin.jpeg" alt="Nevin J Madekkal Portrait" />
                         </div>
                     </div>
 
