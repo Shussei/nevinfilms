@@ -108,8 +108,7 @@ main {
   height: auto;
   aspect-ratio: 3/4;
   object-fit: cover;
-  filter: grayscale(100%);
-  transition: filter 1.2s cubic-bezier(0.165, 0.84, 0.44, 1), transform 1.2s cubic-bezier(0.165, 0.84, 0.44, 1);
+  transition: transform 1.2s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
 .about-content {
@@ -239,12 +238,10 @@ main {
 
   /* Enhanced Reveals */
   .mobile-reveal-image {
-    filter: grayscale(100%);
     transform: scale(1);
-    transition: filter 0.6s ease, transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+    transition: transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
   }
   .mobile-reveal-image.is-visible {
-    filter: grayscale(0%);
     transform: scale(1.02);
   }
 
@@ -315,7 +312,6 @@ button:active, a:active, .interactive:active, .work-grid-item:active {
   }
 
   .about-image:hover .about-image-inner img {
-    filter: grayscale(15%) contrast(1.05);
     transform: scale(1.06);
   }
 
