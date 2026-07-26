@@ -28,17 +28,7 @@ export default function NavBar() {
     useEffect(() => {
         const handleSectionChange = (e: any) => {
             const index = e.detail.activeIndex;
-            // Map panel index to navbar item index:
-            // 0 -> 0 (Home), 1 -> 1 (About), 2 -> 2 (Skills)
-            // 3 -> 3 (Work), 4 -> 3 (Work, Pitch Deck extension)
-            // 5 -> 4 (Contact)
-            let navIndex = index;
-            if (index === 4) {
-                navIndex = 3;
-            } else if (index === 5) {
-                navIndex = 4;
-            }
-            setActiveIndex(Math.max(0, Math.min(navIndex, 4)));
+            setActiveIndex(Math.max(0, Math.min(index, 6)));
         };
         window.addEventListener("sectionChange", handleSectionChange);
         
@@ -47,7 +37,7 @@ export default function NavBar() {
         };
     }, []);
 
-    const navItems = ["Home", "About", "Skills", "Work", "Contact"];
+    const navItems = ["Home", "About", "Skills", "Work", "Pitch Deck", "BTS", "Contact"];
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
@@ -60,13 +50,7 @@ export default function NavBar() {
         if (isDesktop) {
             const st = ScrollTrigger.getById("main-scroller");
             if (st) {
-                // Map navbar click index to scroller panel index:
-                // 0 -> 0, 1 -> 1, 2 -> 2, 3 -> 3 (Work), 4 -> 5 (Contact, skipping Pitch Deck)
-                let sectionIndex = index;
-                if (index === 4) {
-                    sectionIndex = 5;
-                }
-                const targetScroll = st.labelToScroll(`section-${sectionIndex}`);
+                const targetScroll = st.labelToScroll(`section-${index}`);
                 // Use Lenis if available for smoother transition that doesn't fight the scroller
                 const lenis = (window as any).lenis;
                 if (lenis) {
@@ -77,13 +61,7 @@ export default function NavBar() {
             }
         } else {
             const sections = document.querySelectorAll(".panel-section");
-            // Mobile sections layout mapping:
-            // Home (0), About (1), Skills (2), Work (3), Pitch Deck (4), Contact (5)
-            let sectionIndex = index;
-            if (index === 4) {
-                sectionIndex = 5;
-            }
-            const target = sections[sectionIndex];
+            const target = sections[index];
             if (target) {
                 target.scrollIntoView({ behavior: "smooth" });
             }

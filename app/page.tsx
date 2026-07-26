@@ -3,10 +3,12 @@ import HorizontalScroller from "@/components/HorizontalScroller";
 import NavBar from "@/components/NavBar";
 import WorkGallery from "@/components/Work/WorkGallery";
 import PitchDeck from "@/components/PitchDeck";
+import BTS from "@/components/BTS";
 import About from "@/components/About/About";
 import Skills from "@/components/Skills/Skills";
 import Contact from "@/components/Contact/Contact";
 import "@/styles/scroller.css";
+import "@/styles/bts.css";
 
 export default function Home() {
   return (
@@ -30,6 +32,10 @@ export default function Home() {
 
         <section className="panel-section pitch-deck-panel">
           <PitchDeck />
+        </section>
+
+        <section className="panel-section bts-panel">
+          <BTS />
         </section>
 
         <section className="panel-section contact-panel">

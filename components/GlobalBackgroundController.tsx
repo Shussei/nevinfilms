@@ -5,7 +5,7 @@ import "@/styles/backgrounds.css";
 import LightRays from "./LightRays";
 import DotGrid from "./DotGrid";
 
-type SectionType = "home" | "about" | "skills" | "work" | "pitchdeck" | "contact";
+type SectionType = "home" | "about" | "skills" | "work" | "pitchdeck" | "bts" | "contact";
 
 
 export default function GlobalBackgroundController() {
@@ -22,7 +22,7 @@ export default function GlobalBackgroundController() {
         const handleSectionChange = (e: any) => {
             if (isMobileLocal) return;
             const index = e.detail.activeIndex;
-            const sections: SectionType[] = ["home", "about", "skills", "work", "pitchdeck", "contact"];
+            const sections: SectionType[] = ["home", "about", "skills", "work", "pitchdeck", "bts", "contact"];
             if (sections[index]) {
                 setActiveSection(sections[index]);
             }
@@ -47,6 +47,7 @@ export default function GlobalBackgroundController() {
                         else if (target.classList.contains("skills-panel")) setActiveSection("skills");
                         else if (target.classList.contains("work-panel")) setActiveSection("work");
                         else if (target.classList.contains("pitch-deck-panel")) setActiveSection("pitchdeck");
+                        else if (target.classList.contains("bts-panel")) setActiveSection("bts");
                         else if (target.classList.contains("contact-panel")) setActiveSection("contact");
                     }
                 });
@@ -63,7 +64,7 @@ export default function GlobalBackgroundController() {
         };
     }, []);
 
-    const showRays = activeSection === "about" || activeSection === "skills" || activeSection === "work" || activeSection === "pitchdeck";
+    const showRays = activeSection === "about" || activeSection === "skills" || activeSection === "work" || activeSection === "pitchdeck" || activeSection === "bts";
 
     return (
         <div className="global-bg" data-active-section={activeSection}>

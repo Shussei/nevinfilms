@@ -1,0 +1,398 @@
+/* ─── BTS Section Layout ─── */
+.bts-wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bts-section {
+    padding: 6vh 5vw;
+    width: 100%;
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.bts-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.bts-title {
+    font-family: var(--font-display);
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.5rem;
+    color: #fff;
+    text-align: center;
+}
+
+.bts-subtitle {
+    font-family: var(--font-body);
+    font-size: clamp(0.7rem, 1.2vw, 0.85rem);
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    opacity: 0.9;
+}
+
+/* ─── BTS Portrait Grid (9:16 Video Format) ─── */
+.bts-grid {
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+    width: 100%;
+    max-width: 1100px;
+    justify-content: center;
+    align-items: stretch;
+}
+
+.bts-card {
+    flex: 1;
+    max-width: 320px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: left;
+    transition: transform 0.6s cubic-bezier(0.2, 0, 0.2, 1), border-color 0.4s ease, background 0.4s ease;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.015);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    border-radius: 8px;
+    padding: 1.2rem;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+    position: relative;
+    overflow: hidden;
+}
+
+.bts-card:hover {
+    transform: translateY(-8px);
+    border-color: rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.03);
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6), 0 0 25px rgba(139, 124, 246, 0.15);
+}
+
+/* ─── 9:16 Aspect Ratio Video Container ─── */
+.bts-video-container {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 9 / 16;
+    max-height: 52vh;
+    border-radius: 6px;
+    overflow: hidden;
+    background: #080808;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+}
+
+.bts-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: brightness(0.85);
+    transition: filter 0.6s ease, transform 0.6s cubic-bezier(0.2, 0, 0.2, 1);
+}
+
+.bts-card:hover .bts-video {
+    filter: brightness(1);
+    transform: scale(1.03);
+}
+
+/* ─── Video Overlay & Controls ─── */
+.bts-video-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.3) 0%, transparent 40%, rgba(0, 0, 0, 0.6) 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1rem;
+    opacity: 0.85;
+    transition: opacity 0.4s ease;
+}
+
+.bts-card:hover .bts-video-overlay {
+    opacity: 1;
+}
+
+.bts-play-btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: rgba(10, 10, 10, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    backdrop-filter: blur(8px);
+    transition: background 0.3s ease, transform 0.3s ease, border-color 0.3s ease;
+    z-index: 5;
+}
+
+.bts-play-btn:hover {
+    background: rgba(139, 124, 246, 0.85);
+    border-color: #fff;
+    transform: translate(-50%, -50%) scale(1.1);
+}
+
+.bts-mute-btn {
+    align-self: flex-end;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    backdrop-filter: blur(6px);
+    transition: background 0.3s ease, transform 0.3s ease;
+    z-index: 5;
+}
+
+.bts-mute-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.08);
+}
+
+.bts-expand-tag {
+    align-self: center;
+    background: rgba(0, 0, 0, 0.65);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 100px;
+    padding: 0.4rem 1rem;
+    backdrop-filter: blur(8px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.bts-expand-tag span {
+    font-family: var(--font-body);
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    color: #fff;
+    text-transform: uppercase;
+}
+
+.bts-card:hover .bts-expand-tag {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+/* ─── Card Info Text ─── */
+.bts-card-info {
+    width: 100%;
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.bts-card-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.05rem, 1.2vw, 1.25rem);
+    letter-spacing: 0.15em;
+    color: #ffffff;
+    text-transform: uppercase;
+    font-weight: 600;
+    text-align: center;
+    transition: color 0.3s ease;
+}
+
+.bts-card:hover .bts-card-title {
+    color: #C4B5FD;
+}
+
+/* ─── MODAL STYLES ─── */
+.bts-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(5, 5, 5, 0.98);
+    backdrop-filter: blur(15px);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.4s ease forwards;
+}
+
+.bts-modal-content {
+    width: 90vw;
+    max-width: 1000px;
+    height: 88vh;
+    background: #0a0a0a;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    animation: slideUp 0.6s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.bts-modal-close {
+    position: absolute;
+    top: 1.5rem;
+    right: 2rem;
+    background: none;
+    border: none;
+    color: #fff;
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    letter-spacing: 0.3em;
+    cursor: pointer;
+    z-index: 100;
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+}
+
+.bts-modal-close:hover {
+    opacity: 1;
+}
+
+.bts-modal-body {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    height: 100%;
+    width: 100%;
+}
+
+.bts-modal-video-wrapper {
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 2rem;
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.bts-modal-video {
+    max-width: 100%;
+    max-height: 100%;
+    aspect-ratio: 9 / 16;
+    object-fit: contain;
+    border-radius: 6px;
+    outline: none;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+}
+
+.bts-modal-details {
+    padding: 3rem 4rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.bts-modal-details h2 {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: #ffffff;
+    line-height: 1.3;
+    font-weight: 500;
+}
+
+.bts-modal-divider {
+    width: 60px;
+    height: 1px;
+    background: var(--color-accent);
+    margin: 1.8rem 0;
+    opacity: 0.5;
+}
+
+.bts-modal-desc {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--color-text-dim);
+    font-weight: 300;
+}
+
+/* ─── RESPONSIVE BREAKPOINTS ─── */
+@media (max-width: 1024px) {
+    .bts-modal-body {
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr auto;
+        overflow-y: auto;
+    }
+
+    .bts-modal-video-wrapper {
+        height: 50vh;
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .bts-modal-details {
+        padding: 2rem;
+    }
+}
+
+@media (max-width: 767px) {
+    .bts-section {
+        height: auto !important;
+        padding: 60px 20px !important;
+        overflow: visible !important;
+    }
+
+    .bts-grid {
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+    }
+
+    .bts-card {
+        width: 100%;
+        max-width: 360px;
+    }
+
+    .bts-video-container {
+        max-height: 480px;
+    }
+
+    .bts-modal-content {
+        width: 100vw;
+        height: 100dvh;
+        border-radius: 0;
+        border: none;
+    }
+
+    .bts-modal-close {
+        top: auto;
+        bottom: 1.5rem;
+        right: 50%;
+        transform: translateX(50%);
+        padding: 0.75rem 2rem;
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(12px);
+        border-radius: 100px;
+    }
+
+    .bts-modal-details {
+        padding: 1.5rem 1.25rem 6rem;
+    }
+}
