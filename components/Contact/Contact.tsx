@@ -103,7 +103,7 @@ export default function Contact() {
         } else {
             // Desktop horizontal scrolling
             const handleSection = (e: any) => {
-                if (e.detail.activeIndex !== 5) {
+                if (e.detail.activeIndex !== 6) {
                     resetDecryptionSequence();
                 } else {
                     startDecryptionSequence();
