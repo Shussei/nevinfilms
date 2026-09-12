@@ -43,3 +43,6 @@ next-env.d.ts
 # large media / pdf assets (hosted externally)
 public/*.pdf
 public/pitches/
+
+# local backups of original source videos (never deploy)
+/.original-videos/

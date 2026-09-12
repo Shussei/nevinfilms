@@ -18,6 +18,7 @@ interface CircularGalleryProps {
   fontUrl?: string;
   scrollSpeed?: number;
   scrollEase?: number;
+  paused?: boolean;
   onCenterItemChange?: (index: number, isCentered: boolean) => void;
   onCenterItemClick?: (index: number) => void;
 }
@@ -32,6 +33,10 @@ function debounce(func: Function, wait: number) {
 
 function lerp(p1: number, p2: number, t: number) {
   return p1 + (p2 - p1) * t;
+}
+
+function isVideoSrc(src: string) {
+  return /\.(mp4|webm|mov|m4v|ogg)$/i.test(src.split('?')[0]);
 }
 
 function autoBind(instance: any) {
@@ -155,6 +160,10 @@ class Media {
   x: number = 0;
   isBefore: boolean = false;
   isAfter: boolean = false;
+  texture: any;
+  video: HTMLVideoElement | null = null;
+  videoReady: boolean = false;
+  paused: boolean = false;
 
   constructor({
     geometry,
@@ -192,9 +201,11 @@ class Media {
   }
 
   createShader() {
-    const texture = new Texture(this.gl, {
-      generateMipmaps: true
-    });
+    const isVideo = isVideoSrc(this.image);
+    this.texture = new Texture(this.gl, isVideo
+      ? { generateMipmaps: false }
+      : { generateMipmaps: true });
+    const texture = this.texture;
     this.program = new Program(this.gl, {
       depthTest: false,
       depthWrite: false,
@@ -257,13 +268,47 @@ class Media {
       transparent: true
     });
 
-    const img = new Image();
-    img.crossOrigin = 'anonymous';
-    img.src = this.image;
-    img.onload = () => {
-      texture.image = img;
-      this.program.uniforms.uImageSizes.value = [img.naturalWidth, img.naturalHeight];
-    };
+    if (isVideo) {
+      const video = document.createElement('video');
+      video.autoplay = true;
+      video.muted = true;
+      video.loop = true;
+      video.playsInline = true;
+      video.preload = 'auto';
+      video.setAttribute('playsinline', '');
+      video.setAttribute('muted', '');
+      video.setAttribute('autoplay', '');
+      video.src = this.image;
+      const onReady = () => {
+        if (!video.videoWidth || video.readyState < 2) return;
+        this.videoReady = true;
+        texture.image = video;
+        texture.needsUpdate = true;
+        this.program.uniforms.uImageSizes.value = [video.videoWidth, video.videoHeight];
+        video.play().catch(() => {});
+      };
+      video.addEventListener('loadedmetadata', onReady);
+      video.addEventListener('loadeddata', onReady);
+      this.video = video;
+    } else {
+      const img = new Image();
+      img.crossOrigin = 'anonymous';
+      img.src = this.image;
+      img.onload = () => {
+        texture.image = img;
+        this.program.uniforms.uImageSizes.value = [img.naturalWidth, img.naturalHeight];
+      };
+    }
+  }
+
+  playVideo() {
+    if (!this.video) return;
+    if (this.video.paused || this.video.ended) this.video.play().catch(() => {});
+  }
+
+  pauseVideo() {
+    if (!this.video) return;
+    if (!this.video.paused) this.video.pause();
   }
 
   createMesh() {
@@ -313,6 +358,27 @@ class Media {
       this.extra += this.widthTotal;
       this.isBefore = this.isAfter = false;
     }
+
+    if (this.video && this.paused) {
+      this.pauseVideo();
+    }
+  }
+
+  applyVideoPolicy(isCenter: boolean) {
+    if (!this.video) return;
+    if (this.paused || !isCenter || this.isBefore || this.isAfter) {
+      this.pauseVideo();
+      return;
+    }
+    if (this.videoReady) {
+      this.texture.needsUpdate = true;
+      this.playVideo();
+    }
+  }
+
+  setPaused(paused: boolean) {
+    this.paused = paused;
+    this.pauseVideo();
   }
 
   onResize({ screen, viewport }: any = {}) {
@@ -360,6 +426,7 @@ class App {
   boundOnTouchDown!: (e: any) => void;
   boundOnTouchMove!: (e: any) => void;
   boundOnTouchUp!: () => void;
+  paused: boolean = false;
 
   constructor(
     container: HTMLDivElement,
@@ -371,6 +438,7 @@ class App {
       font = 'bold 30px Figtree',
       scrollSpeed = 2,
       scrollEase = 0.05,
+      paused = false,
       onCenterItemChange,
       onCenterItemClick
     }: any = {}
@@ -378,6 +446,7 @@ class App {
     document.documentElement.classList.remove('no-js');
     this.container = container;
     this.scrollSpeed = scrollSpeed;
+    this.paused = paused;
     this.scroll = { ease: scrollEase, current: 0, target: 0, last: 0 };
     this.onCenterItemChange = onCenterItemChange;
     this.onCenterItemClick = onCenterItemClick;
@@ -390,6 +459,13 @@ class App {
     this.createMedias(items, bend, textColor, borderRadius, font);
     this.update();
     this.addEventListeners();
+  }
+
+  setPaused(paused: boolean) {
+    this.paused = paused;
+    if (this.medias) {
+      this.medias.forEach(media => media.setPaused(paused));
+    }
   }
 
   createRenderer() {
@@ -525,6 +601,12 @@ class App {
       this.onCenterItemChange(actualIndex, isCentered);
     }
 
+    if (this.medias) {
+      for (const media of this.medias) {
+        media.applyVideoPolicy(media === centerMedia);
+      }
+    }
+
     this.renderer.render({ scene: this.scene, camera: this.camera });
     this.scroll.last = this.scroll.current;
     this.raf = window.requestAnimationFrame(this.update.bind(this));
@@ -616,10 +698,12 @@ export default function CircularGallery({
   fontUrl,
   scrollSpeed = 2,
   scrollEase = 0.05,
+  paused = false,
   onCenterItemChange,
   onCenterItemClick
 }: CircularGalleryProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const appRef = useRef<App | null>(null);
 
   const onCenterChangeRef = useRef(onCenterItemChange);
   const onCenterClickRef = useRef(onCenterItemClick);
@@ -631,6 +715,10 @@ export default function CircularGallery({
   useEffect(() => {
     onCenterClickRef.current = onCenterItemClick;
   }, [onCenterItemClick]);
+
+  useEffect(() => {
+    if (paused && appRef.current) appRef.current.setPaused(true);
+  }, [paused]);
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -648,6 +736,7 @@ export default function CircularGallery({
         font: resolvedFont,
         scrollSpeed,
         scrollEase,
+        paused,
         onCenterItemChange: (index: number, isCentered: boolean) => {
           onCenterChangeRef.current?.(index, isCentered);
         },
@@ -655,6 +744,8 @@ export default function CircularGallery({
           onCenterClickRef.current?.(index);
         }
       });
+      appRef.current = app;
+      if (paused) app.setPaused(true);
 
       // Observe container resize to update WebGL canvas dimensions dynamically once size is available
       if (typeof window !== "undefined" && window.ResizeObserver && containerRef.current) {
@@ -668,6 +759,7 @@ export default function CircularGallery({
     return () => {
       isMounted = false;
       if (app) app.destroy();
+      appRef.current = null;
       if (resizeObserver) resizeObserver.disconnect();
     };
   }, [items, bend, textColor, borderRadius, font, fontUrl, scrollSpeed, scrollEase]);

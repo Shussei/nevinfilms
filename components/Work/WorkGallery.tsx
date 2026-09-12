@@ -81,6 +81,30 @@ const WORKS = [
         category: "Architectural",
         roles: ["Videography", "Editor"],
         desc: "A rhythmic journey through light and movement, showcasing innovative camera pacing."
+    },
+    {
+        id: "9",
+        videoSrc: "/Benakd_1F.mp4",
+        title: "beNAKD - Fashion Shoot 01",
+        category: "Fashion Film",
+        roles: ["Videography", "Editor"],
+        desc: "Videographer and Editor for this social reel for youth label bé NAKD., capturing raw street aesthetics and the relaxed silhouette of their denim line through grounded urban cinematography."
+    },
+    {
+        id: "10",
+        videoSrc: "/beNAKD-2.mp4",
+        title: "beNAKD - Fashion Shoot 02",
+        category: "Fashion Film",
+        roles: ["Videography", "Editor"],
+        desc: "Handled videography and editing for this social campaign, blending clean architectural lines, stylized split-screen framing, and rhythmic cuts to showcase modern youth denim styling."
+    },
+    {
+        id: "11",
+        videoSrc: "/Benakd_3F.mp4",
+        title: "beNAKD - Fashion Shoot 03",
+        category: "Fashion Film",
+        roles: ["Videography", "Editor"],
+        desc: "Videographer and Editor for this high-energy social lookbook reel, using dynamic beat-synced pacing, lens transitions, and vibrant urban street motion to spotlight the denim collection."
     }
 ];
 
@@ -104,7 +128,7 @@ export default function WorkGallery() {
     }, [selectedWork]);
 
     const galleryItems = useMemo(() => WORKS.map(work => ({
-        image: work.customThumbnail || `https://img.youtube.com/vi/${work.youtubeId}/maxresdefault.jpg`,
+        image: work.customThumbnail || work.videoSrc || `https://img.youtube.com/vi/${work.youtubeId}/maxresdefault.jpg`,
         text: work.title
     })), []);
 
@@ -141,9 +165,10 @@ export default function WorkGallery() {
                     bend={1.2}
                     textColor="#ffffff"
                     borderRadius={0.05}
-                    scrollEase={0.06}
                     font="bold 30px Figtree"
+                    scrollEase={0.06}
                     scrollSpeed={2.2}
+                    paused={!!selectedWork}
                     onCenterItemChange={handleCenterChange}
                     onCenterItemClick={handleCenterClick}
                 />
@@ -174,19 +199,31 @@ export default function WorkGallery() {
                         </button>
 
                         <div className="work-modal-video">
-                            <iframe
-                                src={`https://www.youtube.com/embed/${selectedWork.youtubeId}?autoplay=1&controls=1&rel=0`}
-                                title={selectedWork.title}
-                                allow="autoplay; encrypted-media"
-                                allowFullScreen
-                                className="work-modal-iframe"
-                            />
+                            {selectedWork.videoSrc ? (
+                                <video
+                                    key={selectedWork.id}
+                                    className="work-modal-video-element"
+                                    src={selectedWork.videoSrc}
+                                    autoPlay
+                                    controls
+                                    loop
+                                    playsInline
+                                />
+                            ) : (
+                                <iframe
+                                    src={`https://www.youtube.com/embed/${selectedWork.youtubeId}?autoplay=1&controls=1&rel=0`}
+                                    title={selectedWork.title}
+                                    allow="autoplay; encrypted-media"
+                                    allowFullScreen
+                                    className="work-modal-iframe"
+                                />
+                            )}
                         </div>
 
                         <div className="work-modal-details">
                             <h2 className="work-modal-role">{selectedWork.roles.join(" & ")}</h2>
                             <h3 className="work-modal-type">{selectedWork.title} — {selectedWork.category}</h3>
-                            
+
                             <div className="work-modal-divider"></div>
 
                             <p className="work-modal-desc">
